@@ -240,6 +240,7 @@ input[type=file]{display:none}
 <section class="main">
   <header class="header">
     <button id="menu" class="menu">☰</button>
+    <button id="fullBtn" class="fullBtn">Full Screen</button>
     <div class="headerText">NOOR HVAC</div>
     <div class="tag">Technician You Can Trust</div>
   </header>
@@ -763,6 +764,18 @@ function closeSidebar(){
   sidebar.classList.remove('open');
   overlay.classList.remove('show');
 }
+
+  document.getElementById('fullBtn').onclick=()=>{
+  sidebar.classList.toggle('hidden');
+
+  const btn=document.getElementById('fullBtn');
+
+  if(sidebar.classList.contains('hidden')){
+    btn.textContent='Show History';
+  }else{
+    btn.textContent='Full Screen';
+  }
+};
 
 load();
 renderAll();
