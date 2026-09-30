@@ -1,5 +1,5 @@
 <!doctype html>
-<html>
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
@@ -8,126 +8,212 @@
 
 <style>
 *{box-sizing:border-box}
-body{
-  margin:0;
-  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
-  background:#f4f7fa;
-  color:#12233a
-}
-.app{
-  max-width:900px;
-  margin:auto;
-  min-height:100vh;
-  display:flex;
-  flex-direction:column;
-  background:white
-}
-.head{
-  padding:18px 22px;
-  background:#075aa6;
-  color:white;
-  border-bottom:5px solid #d8232a
-}
-.brand{font-size:28px;font-weight:800}
-.tag{font-size:13px;margin-top:3px}
+html,body{margin:0;height:100%;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#172033;background:#fff}
+button,textarea{font:inherit}
+button{cursor:pointer}
+.app{height:100dvh;display:flex;overflow:hidden}
 
-.chat{
+/* SIDEBAR */
+.sidebar{
+  width:280px;
+  flex:0 0 280px;
+  background:#f4f6f8;
+  border-right:1px solid #ddd;
+  display:flex;
+  flex-direction:column
+}
+.sideTop{padding:15px}
+.logo{font-size:22px;font-weight:800;color:#075aa6;margin-bottom:12px}
+.newChat{
+  width:100%;
+  border:0;
+  background:#075aa6;
+  color:#fff;
+  border-radius:11px;
+  padding:12px;
+  font-weight:700
+}
+.historyTitle{padding:10px 15px 5px;font-size:12px;color:#667085;font-weight:700}
+.chatList{overflow:auto;flex:1;padding:5px 8px 20px}
+.chatItem{
+  padding:10px;
+  margin:3px 0;
+  border-radius:9px;
+  display:flex;
+  align-items:center;
+  gap:5px
+}
+.chatItem:hover,.chatItem.active{background:#e3e8ee}
+.chatTitle{
   flex:1;
-  padding:20px;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+  font-size:14px
+}
+.smallBtn{
+  border:0;
+  background:transparent;
+  color:#667085;
+  padding:3px 5px;
+  font-size:14px
+}
+
+/* MAIN */
+.main{flex:1;min-width:0;display:flex;flex-direction:column}
+.header{
+  height:62px;
+  border-bottom:1px solid #e5e7eb;
+  display:flex;
+  align-items:center;
+  padding:0 18px;
+  gap:12px
+}
+.menu{
+  display:none;
+  border:0;
+  background:transparent;
+  font-size:24px
+}
+.headerText{font-weight:800;font-size:18px}
+.tag{font-size:12px;color:#667085;margin-left:auto}
+
+.messages{
+  flex:1;
   overflow:auto;
+  padding:25px max(18px,calc((100% - 760px)/2));
   padding-bottom:150px
 }
 .welcome{
-  padding:20px;
-  border:1px solid #dce4ec;
-  border-radius:16px;
-  background:#f8fafc
+  max-width:700px;
+  margin:60px auto;
+  text-align:center
 }
-.msg{
-  max-width:82%;
-  padding:12px 14px;
-  margin:12px 0;
-  border-radius:15px;
-  white-space:pre-wrap;
-  line-height:1.5
-}
-.user{
-  margin-left:auto;
-  background:#075aa6;
-  color:white
-}
-.ai{background:#eef3f7}
+.welcome h1{font-size:30px;margin-bottom:8px;color:#075aa6}
+.welcome p{color:#667085;line-height:1.5}
 
-.actions{
-  font-size:12px;
-  margin-top:7px;
-  opacity:.8
+.row{margin:18px 0}
+.row.user{text-align:right}
+.bubble{
+  display:inline-block;
+  max-width:85%;
+  text-align:left;
+  padding:12px 15px;
+  border-radius:17px;
+  line-height:1.5;
+  white-space:normal;
+  overflow-wrap:anywhere
 }
-.actions button{
+.user .bubble{background:#075aa6;color:#fff}
+.assistant .bubble{background:#f1f4f7;color:#172033}
+
+.msgActions{
+  margin-top:6px;
+  font-size:12px;
+  opacity:.72
+}
+.msgActions button{
   border:0;
   background:transparent;
   color:inherit;
-  text-decoration:underline;
-  cursor:pointer;
-  padding:0
+  padding:2px 6px;
+  text-decoration:underline
 }
-.ai p{margin:0 0 10px}
-.ai p:last-child{margin-bottom:0}
-.ai ul,.ai ol{margin:8px 0;padding-left:24px}
-.ai li{margin:5px 0}
-.ai h1,.ai h2,.ai h3{margin:10px 0 6px}
-.ai code{
-  background:#dde6ee;
-  padding:1px 4px;
-  border-radius:4px
+.assistant p{margin:0 0 10px}
+.assistant p:last-child{margin-bottom:0}
+.assistant ul,.assistant ol{padding-left:22px;margin:8px 0}
+.assistant li{margin:5px 0}
+.assistant h1,.assistant h2,.assistant h3{margin:10px 0 6px}
+.assistant code{
+  background:#dfe6ed;
+  padding:2px 5px;
+  border-radius:5px
+}
+.assistant pre{
+  white-space:pre-wrap;
+  background:#1f2937;
+  color:#fff;
+  padding:12px;
+  border-radius:10px;
+  overflow:auto
 }
 
-.status{
-  font-size:12px;
-  color:#687587;
-  padding:0 20px 8px
+/* COMPOSER */
+.bottom{
+  position:relative;
+  background:linear-gradient(transparent,#fff 20%);
+  padding:20px max(12px,calc((100% - 780px)/2)) max(12px,env(safe-area-inset-bottom))
 }
+.status{font-size:12px;color:#667085;min-height:18px;padding:0 10px 5px}
+.preview{
+  display:none;
+  padding:8px 10px;
+  border:1px solid #ddd;
+  border-bottom:0;
+  border-radius:16px 16px 0 0;
+  background:#fff
+}
+.preview img{height:65px;max-width:100px;object-fit:cover;border-radius:8px}
+.preview button{border:0;background:transparent;margin-left:8px}
 .composer{
-  position:sticky;
-  bottom:0;
-  padding:12px;
-  background:white;
-  border-top:1px solid #ddd;
+  border:1px solid #cfd5dc;
+  border-radius:18px;
   display:flex;
-  gap:8px;
-  align-items:end
+  align-items:flex-end;
+  gap:7px;
+  padding:8px;
+  background:#fff;
+  box-shadow:0 3px 15px rgba(0,0,0,.06)
 }
 textarea{
   flex:1;
+  border:0;
+  outline:0;
   resize:none;
-  min-height:48px;
-  max-height:140px;
-  border:1px solid #bbb;
-  border-radius:14px;
-  padding:13px;
+  min-height:44px;
+  max-height:150px;
+  padding:11px 7px;
   font-size:16px
 }
-.btn{
+.iconBtn{
   border:0;
-  border-radius:12px;
-  padding:13px 16px;
-  font-weight:700;
-  background:#d8232a;
-  color:white
+  border-radius:11px;
+  min-width:44px;
+  height:44px;
+  padding:0 10px;
+  background:#eef2f6;
+  color:#075aa6;
+  font-weight:700
 }
-.attach{
-  background:#eef3f7;
-  color:#075aa6
-}
+.send{background:#d8232a;color:#fff}
+.stop{background:#333;color:#fff;display:none}
 input[type=file]{display:none}
-.clear{
-  border:0;
-  background:transparent;
-  color:white;
-  float:right;
-  cursor:pointer;
-  font-size:13px;
-  margin-top:9px
+
+.overlay{display:none}
+
+/* MOBILE */
+@media(max-width:700px){
+  .sidebar{
+    position:fixed;
+    z-index:30;
+    left:-290px;
+    top:0;
+    bottom:0;
+    transition:.2s;
+    box-shadow:4px 0 20px rgba(0,0,0,.15)
+  }
+  .sidebar.open{left:0}
+  .overlay{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.28);
+    z-index:20
+  }
+  .overlay.show{display:block}
+  .menu{display:block}
+  .tag{display:none}
+  .messages{padding-left:14px;padding-right:14px}
+  .bubble{max-width:92%}
 }
 </style>
 </head>
@@ -135,46 +221,180 @@ input[type=file]{display:none}
 <body>
 <div class="app">
 
-<header class="head">
-  <button class="clear" id="clear">New Chat</button>
-  <div class="brand">NOOR HVAC</div>
-  <div class="tag">Technician You Can Trust</div>
-</header>
+<aside id="sidebar" class="sidebar">
+  <div class="sideTop">
+    <div class="logo">NOOR HVAC</div>
+    <button id="newChat" class="newChat">+ New Chat</button>
+  </div>
+  <div class="historyTitle">CONVERSATIONS</div>
+  <div id="chatList" class="chatList"></div>
+</aside>
 
-<main id="chat" class="chat"></main>
+<div id="overlay" class="overlay"></div>
 
-<div id="status" class="status"></div>
+<section class="main">
+  <header class="header">
+    <button id="menu" class="menu">☰</button>
+    <div class="headerText">NOOR HVAC</div>
+    <div class="tag">Technician You Can Trust</div>
+  </header>
 
-<div class="composer">
-  <label class="btn attach" for="file">Photo</label>
-  <input id="file" type="file" accept="image/*">
-  <textarea id="text" placeholder="Ask NOOR HVAC..."></textarea>
-  <button id="send" class="btn">Send</button>
-</div>
+  <main id="messages" class="messages"></main>
 
+  <div class="bottom">
+    <div id="status" class="status"></div>
+
+    <div id="preview" class="preview">
+      <img id="previewImg">
+      <button id="removePhoto">Remove photo</button>
+    </div>
+
+    <div class="composer">
+      <label for="file" class="iconBtn" title="Attach photo">Photo</label>
+      <input id="file" type="file" accept="image/*">
+
+      <textarea id="text" placeholder="Message NOOR HVAC..." rows="1"></textarea>
+
+      <button id="stop" class="iconBtn stop">Stop</button>
+      <button id="send" class="iconBtn send">Send</button>
+    </div>
+  </div>
+</section>
 </div>
 
 <script>
-const chat=document.getElementById('chat');
-const text=document.getElementById('text');
-const file=document.getElementById('file');
-const status=document.getElementById('status');
+const STORAGE_KEY='noor_hvac_conversations_v2';
 
+const messagesEl=document.getElementById('messages');
+const listEl=document.getElementById('chatList');
+const textEl=document.getElementById('text');
+const fileEl=document.getElementById('file');
+const statusEl=document.getElementById('status');
+const previewEl=document.getElementById('preview');
+const previewImg=document.getElementById('previewImg');
+const sendBtn=document.getElementById('send');
+const stopBtn=document.getElementById('stop');
+const sidebar=document.getElementById('sidebar');
+const overlay=document.getElementById('overlay');
+
+let conversations=[];
+let activeId=null;
 let imageData=null;
-let history=[];
+let controller=null;
 
-try{
-  history=JSON.parse(localStorage.getItem('noor_hvac_history')||'[]');
-}catch(e){
-  history=[];
+function id(){
+  return Date.now().toString(36)+Math.random().toString(36).slice(2,8);
+}
+
+function load(){
+  try{
+    conversations=JSON.parse(localStorage.getItem(STORAGE_KEY)||'[]');
+    if(!Array.isArray(conversations)) conversations=[];
+  }catch(e){
+    conversations=[];
+  }
+
+  /* Import old single-chat history if it exists */
+  try{
+    const old=JSON.parse(localStorage.getItem('noor_hvac_history')||'[]');
+    if(Array.isArray(old) && old.length && !conversations.length){
+      conversations.push({
+        id:id(),
+        title:titleFrom(old),
+        created:Date.now(),
+        updated:Date.now(),
+        messages:old
+      });
+      localStorage.removeItem('noor_hvac_history');
+      save();
+    }
+  }catch(e){}
+
+  if(conversations.length){
+    conversations.sort((a,b)=>(b.updated||0)-(a.updated||0));
+    activeId=conversations[0].id;
+  }else{
+    createConversation(false);
+  }
 }
 
 function save(){
-  localStorage.setItem('noor_hvac_history',JSON.stringify(history));
+  localStorage.setItem(STORAGE_KEY,JSON.stringify(conversations));
+}
+
+function current(){
+  return conversations.find(c=>c.id===activeId);
+}
+
+function titleFrom(msgs){
+  const first=msgs.find(m=>m.role==='user' && m.text);
+  if(!first) return 'New conversation';
+  let t=first.text.replace(/\s+/g,' ').trim();
+  return t.length>38?t.slice(0,38)+'…':t;
+}
+
+function createConversation(renderNow=true){
+  const c={
+    id:id(),
+    title:'New conversation',
+    created:Date.now(),
+    updated:Date.now(),
+    messages:[]
+  };
+  conversations.unshift(c);
+  activeId=c.id;
+  save();
+
+  if(renderNow){
+    renderAll();
+    closeSidebar();
+    textEl.focus();
+  }
+}
+
+function openConversation(cid){
+  activeId=cid;
+  const c=current();
+  if(c) c.updated=Date.now();
+  save();
+  renderAll();
+  closeSidebar();
+}
+
+function renameConversation(cid){
+  const c=conversations.find(x=>x.id===cid);
+  if(!c) return;
+  const name=prompt('Rename conversation:',c.title);
+  if(name && name.trim()){
+    c.title=name.trim();
+    c.updated=Date.now();
+    save();
+    renderList();
+  }
+}
+
+function deleteConversation(cid){
+  const c=conversations.find(x=>x.id===cid);
+  if(!c) return;
+
+  if(!confirm('Delete "'+c.title+'"?')) return;
+
+  conversations=conversations.filter(x=>x.id!==cid);
+
+  if(!conversations.length){
+    createConversation(false);
+  }
+
+  if(activeId===cid){
+    activeId=conversations[0].id;
+  }
+
+  save();
+  renderAll();
 }
 
 function esc(s){
-  return String(s).replace(/[&<>"']/g,ch=>({
+  return String(s??'').replace(/[&<>"']/g,ch=>({
     '&':'&amp;',
     '<':'&lt;',
     '>':'&gt;',
@@ -191,142 +411,287 @@ function markdown(s){
     .replace(/^## (.+)$/gm,'<h2>$1</h2>')
     .replace(/^# (.+)$/gm,'<h1>$1</h1>')
     .replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>')
-    .replace(/`([^`]+)`/g,'<code>$1</code>');
+    .replace(/`([^`\n]+)`/g,'<code>$1</code>');
 
   const lines=x.split('\n');
   let out=[];
-  let inList=false;
+  let list=false;
 
   for(const line of lines){
-    const m=line.match(/^\s*[-*] (.+)$/);
+    const bullet=line.match(/^\s*[-*] (.+)$/);
 
-    if(m){
-      if(!inList){
+    if(bullet){
+      if(!list){
         out.push('<ul>');
-        inList=true;
+        list=true;
       }
-      out.push('<li>'+m[1]+'</li>');
+      out.push('<li>'+bullet[1]+'</li>');
       continue;
     }
 
-    if(inList){
+    if(list){
       out.push('</ul>');
-      inList=false;
+      list=false;
     }
 
     if(/^<h[1-3]>/.test(line)){
       out.push(line);
-    }else if(line.trim()===''){
-      out.push('');
-    }else{
+    }else if(line.trim()){
       out.push('<p>'+line+'</p>');
     }
   }
 
-  if(inList) out.push('</ul>');
+  if(list) out.push('</ul>');
   return out.join('');
 }
 
-function render(){
-  chat.innerHTML='';
+function renderList(){
+  listEl.innerHTML='';
 
-  if(history.length===0){
-    const welcome=document.createElement('div');
-    welcome.className='welcome';
-    welcome.innerHTML=
-      '<b>NOOR HVAC Assistant</b><br><br>'+
-      'Ask an HVAC/R question or upload an equipment photo.';
-    chat.appendChild(welcome);
+  const sorted=[...conversations].sort(
+    (a,b)=>(b.updated||0)-(a.updated||0)
+  );
+
+  sorted.forEach(c=>{
+    const row=document.createElement('div');
+    row.className='chatItem'+(c.id===activeId?' active':'');
+
+    const title=document.createElement('div');
+    title.className='chatTitle';
+    title.textContent=c.title || 'New conversation';
+    title.onclick=()=>openConversation(c.id);
+
+    const rename=document.createElement('button');
+    rename.className='smallBtn';
+    rename.textContent='✎';
+    rename.title='Rename';
+    rename.onclick=e=>{
+      e.stopPropagation();
+      renameConversation(c.id);
+    };
+
+    const del=document.createElement('button');
+    del.className='smallBtn';
+    del.textContent='×';
+    del.title='Delete';
+    del.onclick=e=>{
+      e.stopPropagation();
+      deleteConversation(c.id);
+    };
+
+    row.append(title,rename,del);
+    listEl.appendChild(row);
+  });
+}
+
+function renderMessages(){
+  messagesEl.innerHTML='';
+  const c=current();
+  if(!c) return;
+
+  if(!c.messages.length){
+    messagesEl.innerHTML=`
+      <div class="welcome">
+        <h1>NOOR HVAC</h1>
+        <p>
+          HVAC/R technical assistant.<br>
+          Ask a question or attach an equipment photo.
+        </p>
+      </div>`;
+    return;
   }
 
-  history.forEach((item,index)=>{
-    const d=document.createElement('div');
-    d.className='msg '+(item.role==='user'?'user':'ai');
+  c.messages.forEach((m,index)=>{
+    const row=document.createElement('div');
+    row.className='row '+(m.role==='user'?'user':'assistant');
 
-    if(item.role==='assistant'){
-      d.innerHTML=markdown(item.text);
-    }else{
-      const body=document.createElement('div');
-      body.textContent=item.text;
-      d.appendChild(body);
+    const bubble=document.createElement('div');
+    bubble.className='bubble';
+
+    if(m.role==='assistant'){
+      bubble.innerHTML=markdown(m.text);
 
       const actions=document.createElement('div');
-      actions.className='actions';
+      actions.className='msgActions';
+
+      const copy=document.createElement('button');
+      copy.textContent='Copy';
+      copy.onclick=()=>copyText(m.text);
+
+      const regen=document.createElement('button');
+      regen.textContent='Regenerate';
+      regen.onclick=()=>regenerate(index);
+
+      actions.append(copy,regen);
+      bubble.appendChild(actions);
+
+    }else{
+      const content=document.createElement('div');
+      content.textContent=m.text;
+      bubble.appendChild(content);
+
+      const actions=document.createElement('div');
+      actions.className='msgActions';
 
       const edit=document.createElement('button');
       edit.textContent='Edit';
       edit.onclick=()=>editMessage(index);
 
-      actions.appendChild(edit);
-      d.appendChild(actions);
+      const copy=document.createElement('button');
+      copy.textContent='Copy';
+      copy.onclick=()=>copyText(m.text);
+
+      actions.append(edit,copy);
+      bubble.appendChild(actions);
     }
 
-    chat.appendChild(d);
+    row.appendChild(bubble);
+    messagesEl.appendChild(row);
   });
 
-  chat.scrollTop=chat.scrollHeight;
+  messagesEl.scrollTop=messagesEl.scrollHeight;
+}
+
+function renderAll(){
+  renderList();
+  renderMessages();
+}
+
+async function copyText(t){
+  try{
+    await navigator.clipboard.writeText(t);
+    statusEl.textContent='Copied';
+    setTimeout(()=>statusEl.textContent='',1000);
+  }catch(e){}
 }
 
 function editMessage(index){
-  if(history[index].role!=='user') return;
+  const c=current();
+  if(!c || c.messages[index]?.role!=='user') return;
 
-  const old=history[index].text;
+  const old=c.messages[index].text;
 
-  history=history.slice(0,index);
+  /* Editing branches from this point */
+  c.messages=c.messages.slice(0,index);
+  c.updated=Date.now();
+
   save();
-  render();
+  renderAll();
 
-  text.value=old;
-  text.focus();
+  textEl.value=old;
+  autoSize();
+  textEl.focus();
 }
 
-file.onchange=()=>{
-  const f=file.files[0];
+async function regenerate(index){
+  const c=current();
+  if(!c || c.messages[index]?.role!=='assistant') return;
+
+  let userIndex=index-1;
+  while(userIndex>=0 && c.messages[userIndex].role!=='user'){
+    userIndex--;
+  }
+
+  if(userIndex<0) return;
+
+  const userMessage=c.messages[userIndex].text;
+  const previous=c.messages.slice(0,userIndex);
+
+  c.messages=c.messages.slice(0,index);
+  save();
+  renderAll();
+
+  await requestAI(userMessage,null,previous,false);
+}
+
+function autoTitle(c){
+  if(c.title==='New conversation'){
+    c.title=titleFrom(c.messages);
+  }
+}
+
+function autoSize(){
+  textEl.style.height='auto';
+  textEl.style.height=Math.min(textEl.scrollHeight,150)+'px';
+}
+
+textEl.addEventListener('input',autoSize);
+
+fileEl.onchange=()=>{
+  const f=fileEl.files[0];
   if(!f) return;
 
-  const reader=new FileReader();
+  if(!f.type.startsWith('image/')){
+    statusEl.textContent='Please choose an image.';
+    return;
+  }
 
+  const reader=new FileReader();
   reader.onload=()=>{
     imageData=reader.result;
-    status.textContent='Photo attached: '+f.name;
+    previewImg.src=imageData;
+    previewEl.style.display='flex';
+    previewEl.style.alignItems='center';
+    statusEl.textContent='Photo attached';
   };
-
   reader.readAsDataURL(f);
 };
 
-async function send(){
-  const q=text.value.trim();
+document.getElementById('removePhoto').onclick=()=>{
+  imageData=null;
+  fileEl.value='';
+  previewEl.style.display='none';
+  statusEl.textContent='';
+};
 
+async function send(){
+  if(controller) return;
+
+  const q=textEl.value.trim();
   if(!q && !imageData) return;
 
-  const userText=q || 'Analyze this HVAC/R equipment photo.';
-  const previousHistory=[...history];
+  const c=current();
+  if(!c) return;
 
-  history.push({
+  const userText=q || 'Analyze this HVAC/R equipment photo.';
+  const previous=[...c.messages];
+  const img=imageData;
+
+  c.messages.push({
     role:'user',
     text:userText
   });
 
+  c.updated=Date.now();
+  autoTitle(c);
   save();
-  render();
+  renderAll();
 
-  text.value='';
-  status.textContent='Thinking...';
+  textEl.value='';
+  autoSize();
 
-  const img=imageData;
   imageData=null;
-  file.value='';
+  fileEl.value='';
+  previewEl.style.display='none';
+
+  await requestAI(userText,img,previous,true);
+}
+
+async function requestAI(userText,img,previous,addAssistant){
+  controller=new AbortController();
+  sendBtn.style.display='none';
+  stopBtn.style.display='block';
+  statusEl.textContent='NOOR HVAC is thinking...';
 
   try{
     const r=await fetch('/api/chat',{
       method:'POST',
-      headers:{
-        'Content-Type':'application/json'
-      },
+      headers:{'Content-Type':'application/json'},
+      signal:controller.signal,
       body:JSON.stringify({
         message:userText,
         image:img,
-        history:previousHistory
+        history:previous
       })
     });
 
@@ -336,47 +701,66 @@ async function send(){
       throw new Error(j.error || 'Request failed');
     }
 
-    history.push({
+    const c=current();
+    if(!c) return;
+
+    c.messages.push({
       role:'assistant',
-      text:j.text
+      text:j.text || 'No response returned.'
     });
 
+    c.updated=Date.now();
     save();
-    render();
-    status.textContent='';
+    renderAll();
 
   }catch(e){
-    status.textContent='';
+    if(e.name==='AbortError'){
+      statusEl.textContent='Stopped';
+    }else{
+      statusEl.textContent='Error: '+e.message;
+    }
+  }finally{
+    controller=null;
+    sendBtn.style.display='block';
+    stopBtn.style.display='none';
 
-    history.push({
-      role:'assistant',
-      text:'Error: '+e.message
-    });
-
-    save();
-    render();
+    if(statusEl.textContent==='NOOR HVAC is thinking...'){
+      statusEl.textContent='';
+    }
   }
 }
 
-document.getElementById('send').onclick=send;
+stopBtn.onclick=()=>{
+  if(controller) controller.abort();
+};
 
-text.addEventListener('keydown',e=>{
+sendBtn.onclick=send;
+
+textEl.addEventListener('keydown',e=>{
   if(e.key==='Enter' && !e.shiftKey){
     e.preventDefault();
     send();
   }
 });
 
-document.getElementById('clear').onclick=()=>{
-  if(confirm('Start a new conversation?')){
-    history=[];
-    localStorage.removeItem('noor_hvac_history');
-    render();
-  }
+document.getElementById('newChat').onclick=()=>{
+  createConversation(true);
 };
 
-render();
-</script>
+document.getElementById('menu').onclick=()=>{
+  sidebar.classList.add('open');
+  overlay.classList.add('show');
+};
 
+overlay.onclick=closeSidebar;
+
+function closeSidebar(){
+  sidebar.classList.remove('open');
+  overlay.classList.remove('show');
+}
+
+load();
+renderAll();
+</script>
 </body>
 </html>
