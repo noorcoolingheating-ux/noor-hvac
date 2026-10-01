@@ -409,7 +409,7 @@ function esc(s){
   }[ch]));
 }
 
-function markdown(s){
+  function markdown(s){
   let x=esc(s).replace(/\r\n/g,'\n');
 
   x=x
@@ -418,7 +418,10 @@ function markdown(s){
     .replace(/^# (.+)$/gm,'<h1>$1</h1>')
     .replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>')
     .replace(/`([^`\n]+)`/g,'<code>$1</code>')
-  .replace(/https?:\/\/[^\s<)]+/g,'<a href="$&" target="_blank" rel="noopener noreferrer">$&</a>');
+    .replace(
+      /(https?:\/\/[^\s<]+)/g,
+      '<a href="$1" target="_blank" rel="noopener noreferrer">$1</a>'
+    );
 
   const lines=x.split('\n');
   let out=[];
