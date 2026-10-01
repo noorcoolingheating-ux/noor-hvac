@@ -81,12 +81,21 @@ module.exports = async (req, res) => {
       content: currentContent
     });
 
-    const instructions = `
+   const currentDate = new Date().toLocaleDateString('en-US', {
+  timeZone: 'America/New_York',
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric'
+});
+const instructions = `
 You are NOOR HVAC, a knowledgeable general-purpose AI assistant
 with strong expertise in HVAC/R.
 
+The current date is ${currentDate}.
+Use this date for all date-sensitive questions.
+Never guess the current date.
+
 Answer questions about any subject the user asks about, including
-HVAC/R, electrical and mechanical systems, tools, equipment,
 business, licensing, permits, codes, regulations, technology,
 vehicles, products, pricing, troubleshooting, and general knowledge.
 
@@ -259,18 +268,30 @@ ${memory || 'No additional saved memory was supplied.'}
       });
     }
 
-    const outputText = (data.output || [])
-      .flatMap(item => item.content || [])
-      .filter(item => item.type === 'output_text')
-      .map(item => item.text || '')
-      .join('\n')
-      .trim();
+    const outputItems = (data.output || [])
+  .flatMap(item => item.content || [])
+  .filter(item => item.type === 'output_text');
+
+const outputText = outputItems
+  .map(item => item.text || '')
+  .join('\n')
+  .trim();
+
+const citations = outputItems
+  .flatMap(item => item.annotations || [])
+  .filter(annotation => annotation.type === 'url_citation')
+  .map(annotation => ({
+    title: annotation.title || '',
+    url: annotation.url || ''
+  }))
+  .filter(citation => citation.url);
 
     return res.status(200).json({
-      text:
-        outputText ||
-        'No text response was returned.'
-    });
+  text:
+    outputText ||
+    'No text response was returned.',
+  citations
+});
 
   } catch (error) {
     console.error('NOOR HVAC API error:', error);
