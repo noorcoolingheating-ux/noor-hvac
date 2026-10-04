@@ -712,13 +712,14 @@ async function requestAI(userText,img,previous,addAssistant){
     }
 
     const c=current();
-    if(!c) 
+if(!c) return;
 
-    c.messages.push({
+c.messages.push({
   role:'assistant',
   text:j.text || 'No response returned.',
   citations:Array.isArray(j.citations) ? j.citations : []
 });
+
 c.updated=Date.now();
 save();
 renderAll();
