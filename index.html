@@ -7,101 +7,48 @@
 <title>NOOR HVAC</title>
 
 <style>
-:root{
-  --blue:#075aa6;
-  --blueDark:#054b8d;
-  --red:#d8232a;
-  --text:#172033;
-  --muted:#667085;
-  --line:#e5e7eb;
-  --sidebar:#f5f7f9;
-  --assistant:#f1f4f7;
-}
-
 *{box-sizing:border-box}
-
-html,body{
-  margin:0;
-  height:100%;
-  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
-  color:var(--text);
-  background:#fff
-}
-
+html,body{margin:0;height:100%;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#172033;background:#fff}
 button,textarea{font:inherit}
 button{cursor:pointer}
-
-.app{
-  height:100dvh;
-  display:flex;
-  overflow:hidden
-}
+.app{height:100dvh;display:flex;overflow:hidden}
 
 /* SIDEBAR */
 
 .sidebar{
-  width:225px;
-  flex:0 0 225px;
-  background:var(--sidebar);
-  border-right:1px solid #dde3e9;
+  width:210px;
+  flex:0 0 210px;
+  background:#f4f6f8;
+  border-right:1px solid #ddd;
   display:flex;
   flex-direction:column
 }
 
 .sidebar.hidden{
-  display:none
+  display:none;
 }
 
-.sideTop{
-  padding:17px 14px 14px;
-  border-bottom:1px solid #e2e7ec
-}
-
-.logo{
-  color:var(--blue);
-  font-size:20px;
-  font-weight:900;
-  margin:2px 3px 13px
-}
-
-.newChat{
-  width:100%;
+.fullBtn{
   border:0;
-  background:var(--blue);
-  color:#fff;
-  border-radius:11px;
-  padding:11px;
-  font-weight:800
+  background:#eef2f6;
+  color:#075aa6;
+  border-radius:9px;
+  padding:8px 11px;
+  font-weight:700;
 }
 
-.historyTitle{
-  padding:15px 15px 6px;
-  font-size:11px;
-  color:#778292;
-  font-weight:800;
-  letter-spacing:.05em
-}
-
-.chatList{
-  overflow:auto;
-  flex:1;
-  padding:5px 8px 20px
-}
-
+.sideTop{padding:15px}
+.historyTitle{padding:10px 15px 5px;font-size:12px;color:#667085;font-weight:700}
+.chatList{overflow:auto;flex:1;padding:5px 8px 20px}
 .chatItem{
   padding:10px;
   margin:3px 0;
-  border-radius:10px;
+  border-radius:9px;
   display:flex;
   align-items:center;
   gap:5px
 }
-
-.chatItem:hover,
-.chatItem.active{
-  background:#e5ebf0
-}
-
+.chatItem:hover,.chatItem.active{background:#e3e8ee}
 .chatTitle{
   flex:1;
   overflow:hidden;
@@ -109,7 +56,6 @@ button{cursor:pointer}
   white-space:nowrap;
   font-size:14px
 }
-
 .smallBtn{
   border:0;
   background:transparent;
@@ -120,21 +66,15 @@ button{cursor:pointer}
 
 /* MAIN */
 
-.main{
-  flex:1;
-  min-width:0;
-  display:flex;
-  flex-direction:column
-}
+.main{flex:1;min-width:0;display:flex;flex-direction:column}
 
 .header{
-  height:64px;
-  border-bottom:1px solid var(--line);
+  height:62px;
+  border-bottom:1px solid #e5e7eb;
   display:flex;
   align-items:center;
   padding:0 18px;
-  gap:12px;
-  background:#fff
+  gap:12px
 }
 
 .menu{
@@ -144,122 +84,53 @@ button{cursor:pointer}
   font-size:24px
 }
 
-.fullBtn{
-  border:0;
-  background:#eef2f6;
-  color:var(--blue);
-  border-radius:9px;
-  padding:8px 11px;
-  font-weight:700
-}
-
-.headerText{
-  font-weight:900;
-  font-size:19px
-}
-
-.headerText::before{
-  content:"";
-  display:inline-block;
-  width:8px;
-  height:8px;
-  background:var(--red);
-  border-radius:50%;
-  margin-right:8px;
-  vertical-align:2px
-}
-
-.tag{
-  font-size:12px;
-  color:#667085;
-  margin-left:auto
-}
-
-/* MESSAGES */
+.headerText{font-weight:800;font-size:18px}
+.tag{font-size:12px;color:#667085;margin-left:auto}
 
 .messages{
   flex:1;
   overflow:auto;
-  padding:25px max(18px,calc((100% - 780px)/2));
-  padding-bottom:150px;
-  background:linear-gradient(#fafbfd,#fff 130px)
+  padding:25px max(18px,calc((100% - 760px)/2));
+  padding-bottom:150px
 }
 
 .welcome{
   max-width:700px;
-  margin:80px auto;
+  margin:60px auto;
   text-align:center
 }
 
-.welcomeLogo{
-  width:62px;
-  height:62px;
-  margin:0 auto 16px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  border-radius:17px;
-  background:var(--blue);
-  color:#fff;
-  font-size:26px;
-  font-weight:900;
-  box-shadow:0 8px 22px rgba(7,90,166,.18)
-}
+.welcome h1{font-size:30px;margin-bottom:8px;color:#075aa6}
+.welcome p{color:#667085;line-height:1.5}
 
-.welcome h1{
-  font-size:30px;
-  margin:0 0 8px;
-  color:var(--text)
-}
-
-.welcome p{
-  color:#667085;
-  line-height:1.5
-}
-
-.row{
-  margin:18px 0
-}
-
-.row.user{
-  text-align:right
-}
+.row{margin:18px 0}
+.row.user{text-align:right}
 
 .bubble{
   display:inline-block;
   max-width:85%;
   text-align:left;
-  padding:13px 16px;
+  padding:12px 15px;
   border-radius:17px;
   line-height:1.5;
   white-space:normal;
   overflow-wrap:anywhere
 }
 
-.user .bubble{
-  background:linear-gradient(145deg,var(--blue),var(--blueDark));
-  color:#fff;
-  border-bottom-right-radius:6px
-}
-
-.assistant .bubble{
-  background:var(--assistant);
-  color:var(--text);
-  border:1px solid #e6ebef;
-  border-bottom-left-radius:6px
-}
+.user .bubble{background:#075aa6;color:#fff}
+.assistant .bubble{background:#f1f4f7;color:#172033}
 
 .messageImage{
   display:block;
-  max-width:340px;
+  max-width:320px;
   width:100%;
   height:auto;
   border-radius:12px;
-  margin-bottom:9px
+  margin-bottom:8px
 }
 
 .msgActions{
-  margin-top:7px;
+  margin-top:6px;
   font-size:12px;
   opacity:.72
 }
@@ -268,45 +139,26 @@ button{cursor:pointer}
   border:0;
   background:transparent;
   color:inherit;
-  padding:2px 7px 2px 0;
+  padding:2px 6px;
   text-decoration:underline
 }
 
-.assistant p{
-  margin:0 0 10px
-}
-
-.assistant p:last-child{
-  margin-bottom:0
-}
-
-.assistant ul,
-.assistant ol{
-  padding-left:22px;
-  margin:8px 0
-}
-
-.assistant li{
-  margin:5px 0
-}
+.assistant p{margin:0 0 10px}
+.assistant p:last-child{margin-bottom:0}
+.assistant ul,.assistant ol{padding-left:22px;margin:8px 0}
+.assistant li{margin:5px 0}
 
 .assistant h1,
 .assistant h2,
 .assistant h3,
 .assistant h4{
-  margin:12px 0 7px;
-  line-height:1.25
+  margin:10px 0 6px
 }
-
-.assistant h1{font-size:22px}
-.assistant h2{font-size:20px}
-.assistant h3{font-size:18px}
-.assistant h4{font-size:16px}
 
 .assistant a{
   color:#075aa6;
-  font-weight:600;
-  text-decoration:underline
+  text-decoration:underline;
+  overflow-wrap:anywhere
 }
 
 .assistant code{
@@ -324,50 +176,12 @@ button{cursor:pointer}
   overflow:auto
 }
 
-/* SOURCES */
-
-.sourceBox{
-  border-top:1px solid #d9e0e6;
-  margin-top:14px;
-  padding-top:10px
-}
-
-.sourceTitle{
-  color:#667085;
-  font-size:11px;
-  font-weight:800;
-  text-transform:uppercase;
-  letter-spacing:.06em;
-  margin-bottom:7px
-}
-
-.sourceLinks{
-  display:flex;
-  flex-wrap:wrap;
-  gap:7px
-}
-
-.sourceLink{
-  display:inline-block;
-  border:1px solid #cfdbe6;
-  background:#fff;
-  color:var(--blue);
-  border-radius:999px;
-  padding:6px 10px;
-  font-size:12px;
-  font-weight:700;
-  text-decoration:none
-}
-
 /* COMPOSER */
 
 .bottom{
   position:relative;
   background:linear-gradient(transparent,#fff 20%);
-  padding:
-    20px
-    max(12px,calc((100% - 780px)/2))
-    max(12px,env(safe-area-inset-bottom))
+  padding:20px max(12px,calc((100% - 780px)/2)) max(12px,env(safe-area-inset-bottom))
 }
 
 .status{
@@ -396,9 +210,7 @@ button{cursor:pointer}
 .preview button{
   border:0;
   background:transparent;
-  margin-left:8px;
-  color:var(--red);
-  font-weight:700
+  margin-left:8px
 }
 
 .composer{
@@ -409,7 +221,7 @@ button{cursor:pointer}
   gap:7px;
   padding:8px;
   background:#fff;
-  box-shadow:0 4px 18px rgba(0,0,0,.07)
+  box-shadow:0 3px 15px rgba(0,0,0,.06)
 }
 
 textarea{
@@ -430,33 +242,19 @@ textarea{
   height:44px;
   padding:0 10px;
   background:#eef2f6;
-  color:var(--blue);
+  color:#075aa6;
   font-weight:700
 }
 
-.send{
-  background:var(--red);
-  color:#fff
-}
+.send{background:#d8232a;color:#fff}
+.stop{background:#333;color:#fff;display:none}
+input[type=file]{display:none}
 
-.stop{
-  background:#333;
-  color:#fff;
-  display:none
-}
-
-input[type=file]{
-  display:none
-}
-
-.overlay{
-  display:none
-}
+.overlay{display:none}
 
 /* MOBILE */
 
 @media(max-width:700px){
-
   .sidebar{
     position:fixed;
     z-index:30;
@@ -467,9 +265,7 @@ input[type=file]{
     box-shadow:4px 0 20px rgba(0,0,0,.15)
   }
 
-  .sidebar.open{
-    left:0
-  }
+  .sidebar.open{left:0}
 
   .overlay{
     position:fixed;
@@ -478,32 +274,12 @@ input[type=file]{
     z-index:20
   }
 
-  .overlay.show{
-    display:block
-  }
-
-  .menu{
-    display:block
-  }
-
-  .tag{
-    display:none
-  }
-
-  .messages{
-    padding-left:14px;
-    padding-right:14px
-  }
-
-  .bubble{
-    max-width:92%
-  }
-
-  .messageImage{
-    max-width:100%
-  }
+  .overlay.show{display:block}
+  .menu{display:block}
+  .tag{display:none}
+  .messages{padding-left:14px;padding-right:14px}
+  .bubble{max-width:92%}
 }
-
 </style>
 </head>
 
@@ -512,137 +288,72 @@ input[type=file]{
 <div class="app">
 
 <aside id="sidebar" class="sidebar">
-
   <div class="sideTop">
     <div class="logo">NOOR HVAC</div>
-    <button id="newChat" class="newChat">
-      + New Chat
-    </button>
+    <button id="newChat" class="newChat">+ New Chat</button>
   </div>
 
-  <div class="historyTitle">
-    CONVERSATIONS
-  </div>
-
+  <div class="historyTitle">CONVERSATIONS</div>
   <div id="chatList" class="chatList"></div>
-
 </aside>
 
 <div id="overlay" class="overlay"></div>
 
 <section class="main">
 
-<header class="header">
+  <header class="header">
+    <button id="menu" class="menu">☰</button>
+    <button id="fullBtn" class="fullBtn">Full Screen</button>
+    <div class="headerText">NOOR HVAC</div>
+    <div class="tag">Technician You Can Trust</div>
+  </header>
 
-  <button id="menu" class="menu">☰</button>
+  <main id="messages" class="messages"></main>
 
-  <button id="fullBtn" class="fullBtn">
-    Full Screen
-  </button>
+  <div class="bottom">
 
-  <div class="headerText">
-    NOOR HVAC
+    <div id="status" class="status"></div>
+
+    <div id="preview" class="preview">
+      <img id="previewImg">
+      <button id="removePhoto">Remove photo</button>
+    </div>
+
+    <div class="composer">
+
+      <label for="file" class="iconBtn" title="Attach photo">Photo</label>
+      <input id="file" type="file" accept="image/*">
+
+      <textarea
+        id="text"
+        placeholder="Message NOOR HVAC..."
+        rows="1"
+      ></textarea>
+
+      <button id="stop" class="iconBtn stop">Stop</button>
+      <button id="send" class="iconBtn send">Send</button>
+
+    </div>
   </div>
-
-  <div class="tag">
-    Technician You Can Trust
-  </div>
-
-</header>
-
-<main id="messages" class="messages"></main>
-
-<div class="bottom">
-
-  <div id="status" class="status"></div>
-
-  <div id="preview" class="preview">
-    <img id="previewImg">
-    <button id="removePhoto">
-      Remove photo
-    </button>
-  </div>
-
-  <div class="composer">
-
-    <label
-      for="file"
-      class="iconBtn"
-      title="Attach photo"
-    >
-      Photo
-    </label>
-
-    <input
-      id="file"
-      type="file"
-      accept="image/*"
-    >
-
-    <textarea
-      id="text"
-      placeholder="Message NOOR HVAC..."
-      rows="1"
-    ></textarea>
-
-    <button
-      id="stop"
-      class="iconBtn stop"
-    >
-      Stop
-    </button>
-
-    <button
-      id="send"
-      class="iconBtn send"
-    >
-      Send
-    </button>
-
-  </div>
-
-</div>
 
 </section>
 </div>
 
 <script>
 
-const STORAGE_KEY=
-  'noor_hvac_conversations_v2';
+const STORAGE_KEY='noor_hvac_conversations_v2';
 
-const messagesEl=
-  document.getElementById('messages');
-
-const listEl=
-  document.getElementById('chatList');
-
-const textEl=
-  document.getElementById('text');
-
-const fileEl=
-  document.getElementById('file');
-
-const statusEl=
-  document.getElementById('status');
-
-const previewEl=
-  document.getElementById('preview');
-
-const previewImg=
-  document.getElementById('previewImg');
-
-const sendBtn=
-  document.getElementById('send');
-
-const stopBtn=
-  document.getElementById('stop');
-
-const sidebar=
-  document.getElementById('sidebar');
-
-const overlay=
-  document.getElementById('overlay');
+const messagesEl=document.getElementById('messages');
+const listEl=document.getElementById('chatList');
+const textEl=document.getElementById('text');
+const fileEl=document.getElementById('file');
+const statusEl=document.getElementById('status');
+const previewEl=document.getElementById('preview');
+const previewImg=document.getElementById('previewImg');
+const sendBtn=document.getElementById('send');
+const stopBtn=document.getElementById('stop');
+const sidebar=document.getElementById('sidebar');
+const overlay=document.getElementById('overlay');
 
 let conversations=[];
 let activeId=null;
@@ -652,15 +363,12 @@ let controller=null;
 const messageImages=new Map();
 
 function id(){
-
-  return Date.now().toString(36)+
-    Math.random().toString(36).slice(2,8);
+  return Date.now().toString(36)+Math.random().toString(36).slice(2,8);
 }
 
 function load(){
 
   try{
-
     conversations=JSON.parse(
       localStorage.getItem(STORAGE_KEY)||'[]'
     );
@@ -676,24 +384,14 @@ function load(){
   let cleaned=false;
 
   conversations.forEach(c=>{
-
-    if(!Array.isArray(c.messages)){
-      return;
-    }
+    if(!Array.isArray(c.messages)) return;
 
     c.messages.forEach(m=>{
-
-      if(
-        m &&
-        typeof m.image==='string' &&
-        m.image.startsWith('data:')
-      ){
+      if(m && typeof m.image==='string' && m.image.startsWith('data:')){
         delete m.image;
         cleaned=true;
       }
-
     });
-
   });
 
   if(cleaned){
@@ -703,9 +401,7 @@ function load(){
   try{
 
     const old=JSON.parse(
-      localStorage.getItem(
-        'noor_hvac_history'
-      )||'[]'
+      localStorage.getItem('noor_hvac_history')||'[]'
     );
 
     if(
@@ -713,7 +409,6 @@ function load(){
       old.length &&
       !conversations.length
     ){
-
       conversations.push({
         id:id(),
         title:titleFrom(old),
@@ -722,10 +417,7 @@ function load(){
         messages:old
       });
 
-      localStorage.removeItem(
-        'noor_hvac_history'
-      );
-
+      localStorage.removeItem('noor_hvac_history');
       save();
     }
 
@@ -734,84 +426,51 @@ function load(){
   if(conversations.length){
 
     conversations.sort(
-      (a,b)=>
-        (b.updated||0)-
-        (a.updated||0)
+      (a,b)=>(b.updated||0)-(a.updated||0)
     );
 
-    activeId=
-      conversations[0].id;
+    activeId=conversations[0].id;
 
   }else{
-
     createConversation(false);
   }
 }
 
 function save(){
 
-  const safeConversations=
-    conversations.map(c=>({
-
-      ...c,
-
-      messages:
-        Array.isArray(c.messages)
-
-          ? c.messages.map(m=>{
-
-              const copy={...m};
-
-              delete copy.image;
-
-              return copy;
-            })
-
-          : []
-
-    }));
+  const safeConversations=conversations.map(c=>({
+    ...c,
+    messages:Array.isArray(c.messages)
+      ? c.messages.map(m=>{
+          const copy={...m};
+          delete copy.image;
+          return copy;
+        })
+      : []
+  }));
 
   try{
-
     localStorage.setItem(
       STORAGE_KEY,
-      JSON.stringify(
-        safeConversations
-      )
+      JSON.stringify(safeConversations)
     );
-
   }catch(e){
-
-    console.error(
-      'Conversation save failed:',
-      e
-    );
+    console.error('Conversation save failed:',e);
   }
 }
 
 function current(){
-
-  return conversations.find(
-    c=>c.id===activeId
-  );
+  return conversations.find(c=>c.id===activeId);
 }
 
-function imageKey(
-  conversationId,
-  messageId
-){
-
-  return conversationId+
-    ':'+
-    messageId;
+function imageKey(conversationId,messageId){
+  return conversationId+':'+messageId;
 }
 
 function titleFrom(msgs){
 
   const first=msgs.find(
-    m=>
-      m.role==='user' &&
-      m.text
+    m=>m.role==='user' && m.text
   );
 
   if(!first){
@@ -827,9 +486,7 @@ function titleFrom(msgs){
     : t;
 }
 
-function createConversation(
-  renderNow=true
-){
+function createConversation(renderNow=true){
 
   const c={
     id:id(),
@@ -840,17 +497,13 @@ function createConversation(
   };
 
   conversations.unshift(c);
-
   activeId=c.id;
 
   save();
 
   if(renderNow){
-
     renderAll();
-
     closeSidebar();
-
     textEl.focus();
   }
 }
@@ -866,9 +519,7 @@ function openConversation(cid){
   }
 
   save();
-
   renderAll();
-
   closeSidebar();
 }
 
@@ -878,26 +529,17 @@ function renameConversation(cid){
     x=>x.id===cid
   );
 
-  if(!c){
-    return;
-  }
+  if(!c) return;
 
   const name=prompt(
     'Rename conversation:',
     c.title
   );
 
-  if(
-    name &&
-    name.trim()
-  ){
-
+  if(name && name.trim()){
     c.title=name.trim();
-
     c.updated=Date.now();
-
     save();
-
     renderList();
   }
 }
@@ -908,324 +550,198 @@ function deleteConversation(cid){
     x=>x.id===cid
   );
 
-  if(!c){
+  if(!c) return;
+
+  if(!confirm('Delete "'+c.title+'"?')){
     return;
   }
 
-  if(
-    !confirm(
-      'Delete "'+
-      c.title+
-      '"?'
-    )
-  ){
-    return;
-  }
+  conversations=conversations.filter(
+    x=>x.id!==cid
+  );
 
-  conversations=
-    conversations.filter(
-      x=>x.id!==cid
-    );
-
-  for(
-    const key
-    of messageImages.keys()
-  ){
-
-    if(
-      key.startsWith(
-        cid+':'
-      )
-    ){
+  for(const key of messageImages.keys()){
+    if(key.startsWith(cid+':')){
       messageImages.delete(key);
     }
   }
 
   if(!conversations.length){
-
     createConversation(false);
   }
 
   if(activeId===cid){
-
-    activeId=
-      conversations[0].id;
+    activeId=conversations[0].id;
   }
 
   save();
-
   renderAll();
 }
 
 function esc(s){
 
-  return String(s??'')
-    .replace(
-      /[&<>"']/g,
-      ch=>({
-        '&':'&amp;',
-        '<':'&lt;',
-        '>':'&gt;',
-        '"':'&quot;',
-        "'":'&#39;'
-      }[ch])
-    );
-}
-
-/*
-  LINK FIX:
-  Only http and https links are accepted.
-*/
-
-function safeUrl(url){
-
-  try{
-
-    const u=new URL(url);
-
-    if(
-      u.protocol!=='http:' &&
-      u.protocol!=='https:'
-    ){
-      return null;
-    }
-
-    return u.href;
-
-  }catch(e){
-
-    return null;
-  }
+  return String(s??'').replace(
+    /[&<>"']/g,
+    ch=>({
+      '&':'&amp;',
+      '<':'&lt;',
+      '>':'&gt;',
+      '"':'&quot;',
+      "'":'&#39;'
+    }[ch])
+  );
 }
 
 function markdown(s){
 
-  const source=
-    String(s??'')
-      .replace(
-        /\r\n/g,
-        '\n'
-      );
+  let x=esc(s).replace(
+    /\r\n/g,
+    '\n'
+  );
 
   /*
-    Protect normal Markdown links first:
-    [Copeland Manual](https://...)
+    Protect Markdown links before converting
+    plain URLs.
+
+    Example:
+    [Copeland Manual](https://example.com/manual.pdf)
   */
 
-  const savedLinks=[];
+  const links=[];
 
-  let protectedText=
-    source.replace(
-      /\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g,
+  x=x.replace(
+    /\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g,
+    (match,label,url)=>{
 
-      (
-        match,
+      const token=
+        'NOORLINKTOKEN'+
+        links.length+
+        'ENDTOKEN';
+
+      links.push({
         label,
         url
-      )=>{
+      });
 
-        const clean=
-          safeUrl(url);
-
-        if(!clean){
-          return match;
-        }
-
-        const token=
-          'NOORLINKTOKEN'+
-          savedLinks.length+
-          'ENDTOKEN';
-
-        savedLinks.push(
-          '<a href="'+
-          esc(clean)+
-          '" target="_blank" '+
-          'rel="noopener noreferrer">'+
-          esc(label)+
-          '</a>'
-        );
-
-        return token;
-      }
-    );
-
-  let x=
-    esc(protectedText);
+      return token;
+    }
+  );
 
   x=x
-    .replace(
-      /^#### (.+)$/gm,
-      '<h4>$1</h4>'
-    )
-    .replace(
-      /^### (.+)$/gm,
-      '<h3>$1</h3>'
-    )
-    .replace(
-      /^## (.+)$/gm,
-      '<h2>$1</h2>'
-    )
-    .replace(
-      /^# (.+)$/gm,
-      '<h1>$1</h1>'
-    )
-    .replace(
-      /\*\*(.+?)\*\*/g,
-      '<strong>$1</strong>'
-    )
-    .replace(
-      /`([^`\n]+)`/g,
-      '<code>$1</code>'
-    );
+    .replace(/^#### (.+)$/gm,'<h4>$1</h4>')
+    .replace(/^### (.+)$/gm,'<h3>$1</h3>')
+    .replace(/^## (.+)$/gm,'<h2>$1</h2>')
+    .replace(/^# (.+)$/gm,'<h1>$1</h1>')
+    .replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>')
+    .replace(/`([^`\n]+)`/g,'<code>$1</code>');
 
   /*
-    Convert plain URLs but remove
-    punctuation accidentally attached
-    to the end of the URL.
+    Convert plain URLs.
+    Strip sentence punctuation that does not
+    belong to the URL.
   */
 
   x=x.replace(
     /https?:\/\/[^\s<]+/g,
-
     raw=>{
 
       let url=raw;
-      let tail='';
+      let ending='';
 
-      while(
-        /[.,!?;:]$/.test(url)
-      ){
-
-        tail=
-          url.slice(-1)+
-          tail;
-
-        url=
-          url.slice(0,-1);
+      while(/[.,!?;:]$/.test(url)){
+        ending=url.slice(-1)+ending;
+        url=url.slice(0,-1);
       }
 
-      while(
-        url.endsWith(')')
-      ){
+      while(url.endsWith(')')){
 
-        const opens=
-          (
-            url.match(/$begin:math:text$\/g\)\|\|
-            \[\]
-          \)\.length\;
+        const openCount=
+          (url.match(/$begin:math:text$\/g\)\|\|\[\]\)\.length\;
 
-        const closes\=
-          \(
-            url\.match\(\/$end:math:text$/g)||
-            []
-          ).length;
+        const closeCount\=
+          \(url\.match\(\/$end:math:text$/g)||[]).length;
 
-        if(
-          closes<=opens
-        ){
+        if(closeCount<=openCount){
           break;
         }
 
-        tail=
-          ')'+tail;
-
-        url=
-          url.slice(0,-1);
-      }
-
-      const clean=
-        safeUrl(url);
-
-      if(!clean){
-        return raw;
+        ending=')'+ending;
+        url=url.slice(0,-1);
       }
 
       return (
         '<a href="'+
-        esc(clean)+
+        url+
         '" target="_blank" '+
         'rel="noopener noreferrer">'+
-        esc(url)+
+        url+
         '</a>'+
-        tail
+        ending
       );
     }
   );
 
-  savedLinks.forEach(
-    (
-      html,
-      index
-    )=>{
+  /*
+    Restore the Markdown links.
+  */
 
-      const token=
-        'NOORLINKTOKEN'+
-        index+
-        'ENDTOKEN';
+  links.forEach((link,index)=>{
 
-      x=
-        x.replaceAll(
-          token,
-          html
-        );
-    }
-  );
+    const token=
+      'NOORLINKTOKEN'+
+      index+
+      'ENDTOKEN';
 
-  const lines=
-    x.split('\n');
+    const html=
+      '<a href="'+
+      link.url+
+      '" target="_blank" '+
+      'rel="noopener noreferrer">'+
+      link.label+
+      '</a>';
+
+    x=x.replace(
+      token,
+      html
+    );
+  });
+
+  const lines=x.split('\n');
 
   let out=[];
   let list=false;
 
-  for(
-    const line
-    of lines
-  ){
+  for(const line of lines){
 
-    const bullet=
-      line.match(
-        /^\s*[-*] (.+)$/
-      );
+    const bullet=line.match(
+      /^\s*[-*] (.+)$/
+    );
 
     if(bullet){
 
       if(!list){
-
         out.push('<ul>');
-
         list=true;
       }
 
       out.push(
-        '<li>'+
-        bullet[1]+
-        '</li>'
+        '<li>'+bullet[1]+'</li>'
       );
 
       continue;
     }
 
     if(list){
-
       out.push('</ul>');
-
       list=false;
     }
 
-    if(
-      /^<h[1-4]>/.test(line)
-    ){
-
+    if(/^<h[1-4]>/.test(line)){
       out.push(line);
 
-    }else if(
-      line.trim()
-    ){
-
+    }else if(line.trim()){
       out.push(
-        '<p>'+
-        line+
-        '</p>'
+        '<p>'+line+'</p>'
       );
     }
   }
@@ -1236,167 +752,55 @@ function markdown(s){
 
   return out.join('');
 }
-  function renderCitations(citations){
-
-  if(
-    !Array.isArray(citations) ||
-    !citations.length
-  ){
-    return null;
-  }
-
-  const good=
-    citations.filter(
-      c=>
-        c &&
-        safeUrl(c.url)
-    );
-
-  if(!good.length){
-    return null;
-  }
-
-  const box=
-    document.createElement('div');
-
-  box.className='sourceBox';
-
-  const title=
-    document.createElement('div');
-
-  title.className='sourceTitle';
-
-  title.textContent='Sources';
-
-  const links=
-    document.createElement('div');
-
-  links.className='sourceLinks';
-
-  good.forEach(
-    (
-      c,
-      index
-    )=>{
-
-      const a=
-        document.createElement('a');
-
-      a.className='sourceLink';
-
-      a.href=
-        safeUrl(c.url);
-
-      a.target='_blank';
-
-      a.rel=
-        'noopener noreferrer';
-
-      const label=
-        String(
-          c.title||''
-        ).trim() ||
-        'Source '+(index+1);
-
-      a.textContent=label;
-
-      links.appendChild(a);
-    }
-  );
-
-  box.append(
-    title,
-    links
-  );
-
-  return box;
-}
 
 function renderList(){
 
   listEl.innerHTML='';
 
-  const sorted=
-    [...conversations].sort(
-      (a,b)=>
-        (b.updated||0)-
-        (a.updated||0)
-    );
+  const sorted=[...conversations].sort(
+    (a,b)=>(b.updated||0)-(a.updated||0)
+  );
 
   sorted.forEach(c=>{
 
-    const row=
-      document.createElement(
-        'div'
-      );
+    const row=document.createElement('div');
 
     row.className=
       'chatItem'+
-      (
-        c.id===activeId
-          ? ' active'
-          : ''
-      );
+      (c.id===activeId?' active':'');
 
-    const title=
-      document.createElement(
-        'div'
-      );
+    const title=document.createElement('div');
 
-    title.className=
-      'chatTitle';
+    title.className='chatTitle';
 
     title.textContent=
       c.title ||
       'New conversation';
 
     title.onclick=()=>{
-
-      openConversation(
-        c.id
-      );
+      openConversation(c.id);
     };
 
-    const rename=
-      document.createElement(
-        'button'
-      );
+    const rename=document.createElement('button');
 
-    rename.className=
-      'smallBtn';
-
+    rename.className='smallBtn';
     rename.textContent='✎';
-
     rename.title='Rename';
 
     rename.onclick=e=>{
-
       e.stopPropagation();
-
-      renameConversation(
-        c.id
-      );
+      renameConversation(c.id);
     };
 
-    const del=
-      document.createElement(
-        'button'
-      );
+    const del=document.createElement('button');
 
-    del.className=
-      'smallBtn';
-
+    del.className='smallBtn';
     del.textContent='×';
-
     del.title='Delete';
 
     del.onclick=e=>{
-
       e.stopPropagation();
-
-      deleteConversation(
-        c.id
-      );
+      deleteConversation(c.id);
     };
 
     row.append(
@@ -1405,9 +809,7 @@ function renderList(){
       del
     );
 
-    listEl.appendChild(
-      row
-    );
+    listEl.appendChild(row);
   });
 }
 
@@ -1417,250 +819,136 @@ function renderMessages(){
 
   const c=current();
 
-  if(!c){
-    return;
-  }
+  if(!c) return;
 
-  if(
-    !c.messages.length
-  ){
+  if(!c.messages.length){
 
     messagesEl.innerHTML=`
       <div class="welcome">
-
-        <div class="welcomeLogo">
-          N
-        </div>
-
-        <h1>
-          NOOR HVAC
-        </h1>
-
+        <h1>NOOR HVAC</h1>
         <p>
           HVAC/R technical assistant.<br>
           Ask a question or attach an equipment photo.
         </p>
-
       </div>
     `;
 
     return;
   }
 
-  c.messages.forEach(
-    (
-      m,
-      index
-    )=>{
+  c.messages.forEach((m,index)=>{
 
-      const row=
-        document.createElement(
-          'div'
-        );
+    const row=document.createElement('div');
 
-      row.className=
-        'row '+
-        (
-          m.role==='user'
-            ? 'user'
-            : 'assistant'
-        );
+    row.className=
+      'row '+
+      (m.role==='user'
+        ? 'user'
+        : 'assistant');
 
-      const bubble=
-        document.createElement(
-          'div'
-        );
+    const bubble=document.createElement('div');
 
-      bubble.className=
-        'bubble';
+    bubble.className='bubble';
 
-      if(
-        m.role==='assistant'
-      ){
+    if(m.role==='assistant'){
 
-        bubble.innerHTML=
-          markdown(m.text);
+      bubble.innerHTML=markdown(m.text);
 
-        /*
-          Display clean source buttons
-          from API citation data.
-        */
+      const actions=document.createElement('div');
 
-        const citationBox=
-          renderCitations(
-            m.citations
-          );
+      actions.className='msgActions';
 
-        if(citationBox){
+      const copy=document.createElement('button');
 
-          bubble.appendChild(
-            citationBox
-          );
-        }
+      copy.textContent='Copy';
 
-        const actions=
-          document.createElement(
-            'div'
-          );
+      copy.onclick=()=>{
+        copyText(m.text);
+      };
 
-        actions.className=
-          'msgActions';
+      const regen=document.createElement('button');
 
-        const copy=
-          document.createElement(
-            'button'
-          );
+      regen.textContent='Regenerate';
 
-        copy.textContent=
-          'Copy';
+      regen.onclick=()=>{
+        regenerate(index);
+      };
 
-        copy.onclick=()=>{
+      actions.append(
+        copy,
+        regen
+      );
 
-          copyText(
-            m.text
-          );
-        };
+      bubble.appendChild(actions);
 
-        const regen=
-          document.createElement(
-            'button'
-          );
+    }else{
 
-        regen.textContent=
-          'Regenerate';
+      const storedImage=
+        m.id
+          ? messageImages.get(
+              imageKey(c.id,m.id)
+            )
+          : null;
 
-        regen.onclick=()=>{
+      if(storedImage){
 
-          regenerate(
-            index
-          );
-        };
+        const img=document.createElement('img');
 
-        actions.append(
-          copy,
-          regen
-        );
+        img.className='messageImage';
+        img.src=storedImage;
+        img.alt='Uploaded HVAC/R photo';
 
-        bubble.appendChild(
-          actions
-        );
-
-      }else{
-
-        const storedImage=
-          m.id
-
-            ? messageImages.get(
-                imageKey(
-                  c.id,
-                  m.id
-                )
-              )
-
-            : null;
-
-        if(storedImage){
-
-          const img=
-            document.createElement(
-              'img'
-            );
-
-          img.className=
-            'messageImage';
-
-          img.src=
-            storedImage;
-
-          img.alt=
-            'Uploaded HVAC/R photo';
-
-          bubble.appendChild(
-            img
-          );
-        }
-
-        if(m.text){
-
-          const content=
-            document.createElement(
-              'div'
-            );
-
-          content.textContent=
-            m.text;
-
-          bubble.appendChild(
-            content
-          );
-        }
-
-        const actions=
-          document.createElement(
-            'div'
-          );
-
-        actions.className=
-          'msgActions';
-
-        const edit=
-          document.createElement(
-            'button'
-          );
-
-        edit.textContent=
-          'Edit';
-
-        edit.onclick=()=>{
-
-          editMessage(
-            index
-          );
-        };
-
-        const copy=
-          document.createElement(
-            'button'
-          );
-
-        copy.textContent=
-          'Copy';
-
-        copy.onclick=()=>{
-
-          copyText(
-            m.text
-          );
-        };
-
-        actions.append(
-          edit,
-          copy
-        );
-
-        bubble.appendChild(
-          actions
-        );
+        bubble.appendChild(img);
       }
 
-      row.appendChild(
-        bubble
+      if(m.text){
+
+        const content=document.createElement('div');
+
+        content.textContent=m.text;
+
+        bubble.appendChild(content);
+      }
+
+      const actions=document.createElement('div');
+
+      actions.className='msgActions';
+
+      const edit=document.createElement('button');
+
+      edit.textContent='Edit';
+
+      edit.onclick=()=>{
+        editMessage(index);
+      };
+
+      const copy=document.createElement('button');
+
+      copy.textContent='Copy';
+
+      copy.onclick=()=>{
+        copyText(m.text);
+      };
+
+      actions.append(
+        edit,
+        copy
       );
 
-      messagesEl.appendChild(
-        row
-      );
+      bubble.appendChild(actions);
     }
-  );
+
+    row.appendChild(bubble);
+
+    messagesEl.appendChild(row);
+  });
 
   messagesEl.scrollTop=
     messagesEl.scrollHeight;
 }
 
 function renderAll(){
-
   renderList();
-
   renderMessages();
 }
 
@@ -1668,20 +956,13 @@ async function copyText(t){
 
   try{
 
-    await navigator.clipboard
-      .writeText(t);
+    await navigator.clipboard.writeText(t);
 
-    statusEl.textContent=
-      'Copied';
+    statusEl.textContent='Copied';
 
-    setTimeout(
-      ()=>{
-
-        statusEl.textContent='';
-
-      },
-      1000
-    );
+    setTimeout(()=>{
+      statusEl.textContent='';
+    },1000);
 
   }catch(e){}
 }
@@ -1692,106 +973,72 @@ function editMessage(index){
 
   if(
     !c ||
-    c.messages[index]
-      ?.role!=='user'
+    c.messages[index]?.role!=='user'
   ){
     return;
   }
 
-  const old=
-    c.messages[index].text;
-
-  /*
-    Editing branches from this point.
-  */
+  const old=c.messages[index].text;
 
   c.messages=
-    c.messages.slice(
-      0,
-      index
-    );
+    c.messages.slice(0,index);
 
-  c.updated=
-    Date.now();
+  c.updated=Date.now();
 
   save();
-
   renderAll();
 
-  textEl.value=
-    old;
+  textEl.value=old;
 
   autoSize();
 
   textEl.focus();
 }
 
-async function regenerate(
-  index
-){
+async function regenerate(index){
 
   const c=current();
 
   if(
     !c ||
-    c.messages[index]
-      ?.role!=='assistant'
+    c.messages[index]?.role!=='assistant'
   ){
     return;
   }
 
-  let userIndex=
-    index-1;
+  let userIndex=index-1;
 
   while(
     userIndex>=0 &&
-    c.messages[userIndex]
-      .role!=='user'
+    c.messages[userIndex].role!=='user'
   ){
-
     userIndex--;
   }
 
-  if(
-    userIndex<0
-  ){
+  if(userIndex<0){
     return;
   }
 
   const userMessage=
-    c.messages[
-      userIndex
-    ];
+    c.messages[userIndex];
 
   const userText=
     userMessage.text;
 
   const userImage=
     userMessage.id
-
       ? messageImages.get(
-          imageKey(
-            c.id,
-            userMessage.id
-          )
+          imageKey(c.id,userMessage.id)
         ) || null
-
       : null;
 
   const previous=
-    c.messages.slice(
-      0,
-      userIndex
-    );
+    c.messages.slice(0,userIndex);
 
   c.messages=
-    c.messages.slice(
-      0,
-      index
-    );
+    c.messages.slice(0,index);
 
   save();
-
   renderAll();
 
   await requestAI(
@@ -1803,22 +1050,14 @@ async function regenerate(
 
 function autoTitle(c){
 
-  if(
-    c.title===
-    'New conversation'
-  ){
-
-    c.title=
-      titleFrom(
-        c.messages
-      );
+  if(c.title==='New conversation'){
+    c.title=titleFrom(c.messages);
   }
 }
 
 function autoSize(){
 
-  textEl.style.height=
-    'auto';
+  textEl.style.height='auto';
 
   textEl.style.height=
     Math.min(
@@ -1834,18 +1073,13 @@ textEl.addEventListener(
 
 fileEl.onchange=()=>{
 
-  const f=
-    fileEl.files[0];
+  const f=fileEl.files[0];
 
   if(!f){
     return;
   }
 
-  if(
-    !f.type.startsWith(
-      'image/'
-    )
-  ){
+  if(!f.type.startsWith('image/')){
 
     statusEl.textContent=
       'Please choose an image.';
@@ -1855,25 +1089,19 @@ fileEl.onchange=()=>{
     return;
   }
 
-  const reader=
-    new FileReader();
+  const reader=new FileReader();
 
   reader.onload=()=>{
 
-    imageData=
-      String(
-        reader.result ||
-        ''
-      );
+    imageData=String(
+      reader.result || ''
+    );
 
-    previewImg.src=
-      imageData;
+    previewImg.src=imageData;
 
-    previewEl.style.display=
-      'flex';
+    previewEl.style.display='flex';
 
-    previewEl.style.alignItems=
-      'center';
+    previewEl.style.alignItems='center';
 
     statusEl.textContent=
       'Photo attached';
@@ -1885,21 +1113,15 @@ fileEl.onchange=()=>{
 
     fileEl.value='';
 
-    previewImg
-      .removeAttribute(
-        'src'
-      );
+    previewImg.removeAttribute('src');
 
-    previewEl.style.display=
-      'none';
+    previewEl.style.display='none';
 
     statusEl.textContent=
       'Could not read photo.';
   };
 
-  reader.readAsDataURL(
-    f
-  );
+  reader.readAsDataURL(f);
 };
 
 document.getElementById(
@@ -1910,13 +1132,9 @@ document.getElementById(
 
   fileEl.value='';
 
-  previewImg
-    .removeAttribute(
-      'src'
-    );
+  previewImg.removeAttribute('src');
 
-  previewEl.style.display=
-    'none';
+  previewEl.style.display='none';
 
   statusEl.textContent='';
 };
@@ -1927,13 +1145,9 @@ async function send(){
     return;
   }
 
-  const q=
-    textEl.value.trim();
+  const q=textEl.value.trim();
 
-  if(
-    !q &&
-    !imageData
-  ){
+  if(!q && !imageData){
     return;
   }
 
@@ -1948,18 +1162,14 @@ async function send(){
     'Analyze this HVAC/R equipment photo.';
 
   const previous=
-    c.messages.map(
-      m=>({
-        role:m.role,
-        text:m.text
-      })
-    );
+    c.messages.map(m=>({
+      role:m.role,
+      text:m.text
+    }));
 
-  const img=
-    imageData;
+  const img=imageData;
 
-  const messageId=
-    id();
+  const messageId=id();
 
   c.messages.push({
     id:messageId,
@@ -1967,24 +1177,14 @@ async function send(){
     text:userText
   });
 
-  /*
-    Keep image only in
-    current page memory.
-  */
-
   if(img){
-
     messageImages.set(
-      imageKey(
-        c.id,
-        messageId
-      ),
+      imageKey(c.id,messageId),
       img
     );
   }
 
-  c.updated=
-    Date.now();
+  c.updated=Date.now();
 
   autoTitle(c);
 
@@ -2000,13 +1200,9 @@ async function send(){
 
   fileEl.value='';
 
-  previewImg
-    .removeAttribute(
-      'src'
-    );
+  previewImg.removeAttribute('src');
 
-  previewEl.style.display=
-    'none';
+  previewEl.style.display='none';
 
   await requestAI(
     userText,
@@ -2024,54 +1220,41 @@ async function requestAI(
   controller=
     new AbortController();
 
-  sendBtn.style.display=
-    'none';
+  sendBtn.style.display='none';
 
-  stopBtn.style.display=
-    'block';
+  stopBtn.style.display='block';
 
   statusEl.textContent=
     'NOOR HVAC is thinking...';
 
   try{
 
-    const r=
-      await fetch(
-        '/api/chat',
-        {
+    const r=await fetch(
+      '/api/chat',
+      {
+        method:'POST',
 
-          method:'POST',
+        headers:{
+          'Content-Type':
+            'application/json'
+        },
 
-          headers:{
-            'Content-Type':
-              'application/json'
-          },
+        signal:
+          controller.signal,
 
-          signal:
-            controller.signal,
-
-          body:
-            JSON.stringify({
-              message:userText,
-              image:
-                img || null,
-              history:
-                previous
-            })
-        }
-      );
+        body:JSON.stringify({
+          message:userText,
+          image:img || null,
+          history:previous
+        })
+      }
+    );
 
     let j;
 
     try{
-
-      j=
-        await r.json();
-
-    }catch(
-      parseError
-    ){
-
+      j=await r.json();
+    }catch(parseError){
       throw new Error(
         'Server returned an invalid response.'
       );
@@ -2092,25 +1275,18 @@ async function requestAI(
     }
 
     c.messages.push({
-
       id:id(),
-
       role:'assistant',
-
       text:
         j.text ||
         'No response returned.',
-
       citations:
-        Array.isArray(
-          j.citations
-        )
+        Array.isArray(j.citations)
           ? j.citations
           : []
     });
 
-    c.updated=
-      Date.now();
+    c.updated=Date.now();
 
     save();
 
@@ -2118,10 +1294,7 @@ async function requestAI(
 
   }catch(e){
 
-    if(
-      e.name===
-      'AbortError'
-    ){
+    if(e.name==='AbortError'){
 
       statusEl.textContent=
         'Stopped';
@@ -2145,17 +1318,14 @@ async function requestAI(
 
     controller=null;
 
-    sendBtn.style.display=
-      'block';
+    sendBtn.style.display='block';
 
-    stopBtn.style.display=
-      'none';
+    stopBtn.style.display='none';
 
     if(
       statusEl.textContent===
       'NOOR HVAC is thinking...'
     ){
-
       statusEl.textContent='';
     }
   }
@@ -2164,13 +1334,11 @@ async function requestAI(
 stopBtn.onclick=()=>{
 
   if(controller){
-
     controller.abort();
   }
 };
 
 sendBtn.onclick=()=>{
-
   send();
 };
 
@@ -2182,9 +1350,7 @@ textEl.addEventListener(
       e.key==='Enter' &&
       !e.shiftKey
     ){
-
       e.preventDefault();
-
       send();
     }
   }
@@ -2194,22 +1360,16 @@ document.getElementById(
   'newChat'
 ).onclick=()=>{
 
-  createConversation(
-    true
-  );
+  createConversation(true);
 };
 
 document.getElementById(
   'menu'
 ).onclick=()=>{
 
-  sidebar.classList.add(
-    'open'
-  );
+  sidebar.classList.add('open');
 
-  overlay.classList.add(
-    'show'
-  );
+  overlay.classList.add('show');
 };
 
 overlay.onclick=
@@ -2217,13 +1377,9 @@ overlay.onclick=
 
 function closeSidebar(){
 
-  sidebar.classList.remove(
-    'open'
-  );
+  sidebar.classList.remove('open');
 
-  overlay.classList.remove(
-    'show'
-  );
+  overlay.classList.remove('show');
 }
 
 document.getElementById(
@@ -2244,19 +1400,14 @@ document.getElementById(
       'hidden'
     )
   ){
-
-    btn.textContent=
-      'Show History';
+    btn.textContent='Show History';
 
   }else{
-
-    btn.textContent=
-      'Full Screen';
+    btn.textContent='Full Screen';
   }
 };
 
 load();
-
 renderAll();
 
 </script>
