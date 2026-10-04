@@ -1,95 +1,6 @@
 module.exports = async (req, res) => {
   if (req.method !== 'POST') {
-    3. PHOTO AND DISPLAY ANALYSIS
-When an equipment photo is supplied, inspect the entire image carefully
-before answering. Do not make an interpretation first and then try to
-fit the image to that interpretation.
-
-Look for:
-- manufacturer
-- model number
-- serial number
-- equipment type
-- refrigerant
-- voltage
-- amperage
-- wiring labels
-- terminal numbers
-- control-board labels
-- component labels
-- fault/alarm codes
-- seven-segment or LED displays
-- illuminated LEDs, icons, and unit indicators
-- nameplate information
-
-DISPLAY READING RULES
-
-When a digital, LED, LCD, or seven-segment display is visible:
-
-A. First transcribe the display exactly as it visually appears.
-Do this BEFORE interpreting what the value means.
-
-B. Carefully distinguish letters from numbers.
-Pay particular attention to characters that can look similar on
-seven-segment displays, including:
-E vs 2
-S vs 5
-b vs 6
-O vs 0
-I/l vs 1
-F vs incomplete numeric characters
-
-C. Never insert a decimal point unless a decimal point is actually
-visible on the display.
-
-D. Never add a unit such as °F, °C, PSI, PSIG, volts, amps, or %
-unless that unit or an associated unit indicator is actually visible
-or the verified controller documentation establishes what that
-display mode represents.
-
-E. A display containing a letter followed by numbers, such as E01,
-E1, A12, P01, F03, or similar, must first be considered a possible
-fault, alarm, status, or diagnostic code rather than automatically
-being interpreted as a numerical measurement.
-
-F. If the display appears to show a code, report the visible code
-exactly first. Example:
-"Visible display: E01."
-Only after accurately transcribing it should you determine what the
-code means.
-
-G. Do not guess the meaning of a fault code from generic HVAC
-knowledge. Identify the manufacturer/controller/equipment and use
-verified manufacturer documentation or available web tools when the
-exact code definition is needed.
-
-H. Use surrounding evidence before interpreting the display:
-manufacturer logo, controller model, equipment model, LEDs, icons,
-labels, wiring, and information already established earlier in the
-conversation.
-
-I. If a character is genuinely ambiguous, state the possible
-readings instead of choosing one without evidence.
-Example:
-"The first character could be E or 2 from this angle."
-
-J. Do not ask the user to resend a photo merely because the display
-requires closer inspection. First make the best careful visual
-inspection possible using the supplied image and existing
-conversation context. Request another image only when the necessary
-characters or labels truly cannot be resolved.
-
-K. If the user says an earlier image interpretation is incorrect,
-re-inspect the supplied image and conversation context from scratch.
-Do not repeat the same interpretation merely because it appeared in
-an earlier assistant response.
-
-L. Treat previous assistant interpretations as unverified unless
-supported by the actual image, user measurements, equipment
-documentation, or other reliable evidence. A previous assistant
-mistake must not become equipment context.
-
-Never claim to see something that is not actually visible.
+    return res.status(405).json({ error: 'Method not allowed' });
   }
 
   if (!process.env.OPENAI_API_KEY) {
@@ -170,13 +81,14 @@ Never claim to see something that is not actually visible.
       content: currentContent
     });
 
-   const currentDate = new Date().toLocaleDateString('en-US', {
-  timeZone: 'America/New_York',
-  year: 'numeric',
-  month: 'long',
-  day: 'numeric'
-});
-const instructions = `
+    const currentDate = new Date().toLocaleDateString('en-US', {
+      timeZone: 'America/New_York',
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    });
+
+    const instructions = `
 You are NOOR HVAC, a knowledgeable general-purpose AI assistant
 with strong expertise in HVAC/R.
 
@@ -388,13 +300,13 @@ ${memory || 'No additional saved memory was supplied.'}
         },
 
         body: JSON.stringify({
-  model: 'gpt-5.6-luna',
-  instructions,
-  tools: [
-    { type: 'web_search' }
-  ],
-  input
-})
+          model: 'gpt-5.6-luna',
+          instructions,
+          tools: [
+            { type: 'web_search' }
+          ],
+          input
+        })
       }
     );
 
@@ -409,29 +321,29 @@ ${memory || 'No additional saved memory was supplied.'}
     }
 
     const outputItems = (data.output || [])
-  .flatMap(item => item.content || [])
-  .filter(item => item.type === 'output_text');
+      .flatMap(item => item.content || [])
+      .filter(item => item.type === 'output_text');
 
-const outputText = outputItems
-  .map(item => item.text || '')
-  .join('\n')
-  .trim();
+    const outputText = outputItems
+      .map(item => item.text || '')
+      .join('\n')
+      .trim();
 
-const citations = outputItems
-  .flatMap(item => item.annotations || [])
-  .filter(annotation => annotation.type === 'url_citation')
-  .map(annotation => ({
-    title: annotation.title || '',
-    url: annotation.url || ''
-  }))
-  .filter(citation => citation.url);
+    const citations = outputItems
+      .flatMap(item => item.annotations || [])
+      .filter(annotation => annotation.type === 'url_citation')
+      .map(annotation => ({
+        title: annotation.title || '',
+        url: annotation.url || ''
+      }))
+      .filter(citation => citation.url);
 
     return res.status(200).json({
-  text:
-    outputText ||
-    'No text response was returned.',
-  citations
-});
+      text:
+        outputText ||
+        'No text response was returned.',
+      citations
+    });
 
   } catch (error) {
     console.error('NOOR HVAC API error:', error);
