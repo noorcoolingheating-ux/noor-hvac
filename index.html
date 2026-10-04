@@ -147,19 +147,7 @@ button{cursor:pointer}
 .assistant p:last-child{margin-bottom:0}
 .assistant ul,.assistant ol{padding-left:22px;margin:8px 0}
 .assistant li{margin:5px 0}
-
-.assistant h1,
-.assistant h2,
-.assistant h3,
-.assistant h4{
-  margin:10px 0 6px
-}
-
-.assistant a{
-  color:#075aa6;
-  text-decoration:underline;
-  overflow-wrap:anywhere
-}
+.assistant h1,.assistant h2,.assistant h3{margin:10px 0 6px}
 
 .assistant code{
   background:#dfe6ed;
@@ -360,6 +348,10 @@ let activeId=null;
 let imageData=null;
 let controller=null;
 
+/*
+  Images are kept in memory for the current page session.
+  They are NOT stored as huge base64 strings in localStorage.
+*/
 const messageImages=new Map();
 
 function id(){
@@ -381,6 +373,7 @@ function load(){
     conversations=[];
   }
 
+  /* Remove any old base64 images previously stored in localStorage */
   let cleaned=false;
 
   conversations.forEach(c=>{
@@ -398,6 +391,7 @@ function load(){
     save();
   }
 
+  /* Import old single-chat history if it exists */
   try{
 
     const old=JSON.parse(
@@ -437,6 +431,11 @@ function load(){
 }
 
 function save(){
+
+  /*
+    Store conversation text/history only.
+    Never put base64 image data into localStorage.
+  */
 
   const safeConversations=conversations.map(c=>({
     ...c,
@@ -599,94 +598,16 @@ function markdown(s){
     '\n'
   );
 
-  const links=[];
-
-  x=x.replace(
-    /\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g,
-    (match,label,url)=>{
-
-      const token=
-        'NOORLINKTOKEN'+
-        links.length+
-        'ENDTOKEN';
-
-      links.push({
-        label,
-        url
-      });
-
-      return token;
-    }
-  );
-
   x=x
-    .replace(/^#### (.+)$/gm,'<h4>$1</h4>')
     .replace(/^### (.+)$/gm,'<h3>$1</h3>')
     .replace(/^## (.+)$/gm,'<h2>$1</h2>')
     .replace(/^# (.+)$/gm,'<h1>$1</h1>')
     .replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>')
-    .replace(/`([^`\n]+)`/g,'<code>$1</code>');
-
-  x=x.replace(
-    /https?:\/\/[^\s<]+/g,
-    raw=>{
-
-      let url=raw;
-      let ending='';
-
-      while(/[.,!?;:]$/.test(url)){
-        ending=url.slice(-1)+ending;
-        url=url.slice(0,-1);
-      }
-
-      while(url.endsWith(')')){
-
-        const openCount=
-          (url.match(/$begin:math:text$\/g\)\|\|\[\]\)\.length\;
-
-        const closeCount\=
-          \(url\.match\(\/$end:math:text$/g)||[]).length;
-
-        if(closeCount<=openCount){
-          break;
-        }
-
-        ending=')'+ending;
-        url=url.slice(0,-1);
-      }
-
-      return (
-        '<a href="'+
-        url+
-        '" target="_blank" '+
-        'rel="noopener noreferrer">'+
-        url+
-        '</a>'+
-        ending
-      );
-    }
-  );
-
-  links.forEach((link,index)=>{
-
-    const token=
-      'NOORLINKTOKEN'+
-      index+
-      'ENDTOKEN';
-
-    const html=
-      '<a href="'+
-      link.url+
-      '" target="_blank" '+
-      'rel="noopener noreferrer">'+
-      link.label+
-      '</a>';
-
-    x=x.replace(
-      token,
-      html
+    .replace(/`([^`\n]+)`/g,'<code>$1</code>')
+    .replace(
+      /(https?:\/\/[^\s<]+)/g,
+      '<a href="$1" target="_blank" rel="noopener noreferrer">$1</a>'
     );
-  });
 
   const lines=x.split('\n');
 
@@ -718,7 +639,7 @@ function markdown(s){
       list=false;
     }
 
-    if(/^<h[1-4]>/.test(line)){
+    if(/^<h[1-3]>/.test(line)){
       out.push(line);
 
     }else if(line.trim()){
@@ -962,6 +883,9 @@ function editMessage(index){
 
   const old=c.messages[index].text;
 
+  /*
+    Editing branches from this point.
+  */
   c.messages=
     c.messages.slice(0,index);
 
@@ -1159,6 +1083,10 @@ async function send(){
     text:userText
   });
 
+  /*
+    Keep the image in page memory only.
+    Do not store the base64 image in localStorage.
+  */
   if(img){
     messageImages.set(
       imageKey(c.id,messageId),
