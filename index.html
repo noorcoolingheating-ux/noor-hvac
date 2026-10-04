@@ -112,6 +112,15 @@ button{cursor:pointer}
 .user .bubble{background:#075aa6;color:#fff}
 .assistant .bubble{background:#f1f4f7;color:#172033}
 
+.messageImage{
+  display:block;
+  max-width:320px;
+  width:100%;
+  height:auto;
+  border-radius:12px;
+  margin-bottom:8px
+}
+
 .msgActions{
   margin-top:6px;
   font-size:12px;
@@ -409,7 +418,7 @@ function esc(s){
   }[ch]));
 }
 
-  function markdown(s){
+function markdown(s){
   let x=esc(s).replace(/\r\n/g,'\n');
 
   x=x
@@ -536,9 +545,19 @@ function renderMessages(){
       bubble.appendChild(actions);
 
     }else{
-      const content=document.createElement('div');
-      content.textContent=m.text;
-      bubble.appendChild(content);
+      if(m.image){
+        const img=document.createElement('img');
+        img.className='messageImage';
+        img.src=m.image;
+        img.alt='Uploaded HVAC/R photo';
+        bubble.appendChild(img);
+      }
+
+      if(m.text){
+        const content=document.createElement('div');
+        content.textContent=m.text;
+        bubble.appendChild(content);
+      }
 
       const actions=document.createElement('div');
       actions.className='msgActions';
@@ -605,13 +624,14 @@ async function regenerate(index){
   if(userIndex<0) return;
 
   const userMessage=c.messages[userIndex].text;
+  const userImage=c.messages[userIndex].image || null;
   const previous=c.messages.slice(0,userIndex);
 
   c.messages=c.messages.slice(0,index);
   save();
   renderAll();
 
-  await requestAI(userMessage,null,previous,false);
+  await requestAI(userMessage,userImage,previous,false);
 }
 
 function autoTitle(c){
@@ -637,6 +657,7 @@ fileEl.onchange=()=>{
   }
 
   const reader=new FileReader();
+
   reader.onload=()=>{
     imageData=reader.result;
     previewImg.src=imageData;
@@ -644,12 +665,21 @@ fileEl.onchange=()=>{
     previewEl.style.alignItems='center';
     statusEl.textContent='Photo attached';
   };
+
+  reader.onerror=()=>{
+    imageData=null;
+    fileEl.value='';
+    previewEl.style.display='none';
+    statusEl.textContent='Could not read photo.';
+  };
+
   reader.readAsDataURL(f);
 };
 
 document.getElementById('removePhoto').onclick=()=>{
   imageData=null;
   fileEl.value='';
+  previewImg.removeAttribute('src');
   previewEl.style.display='none';
   statusEl.textContent='';
 };
@@ -669,7 +699,8 @@ async function send(){
 
   c.messages.push({
     role:'user',
-    text:userText
+    text:userText,
+    image:img || null
   });
 
   c.updated=Date.now();
@@ -682,6 +713,7 @@ async function send(){
 
   imageData=null;
   fileEl.value='';
+  previewImg.removeAttribute('src');
   previewEl.style.display='none';
 
   await requestAI(userText,img,previous,true);
@@ -712,18 +744,17 @@ async function requestAI(userText,img,previous,addAssistant){
     }
 
     const c=current();
-if(!c) return;
+    if(!c) return;
 
-c.messages.push({
-  role:'assistant',
-  text:j.text || 'No response returned.',
-  citations:Array.isArray(j.citations) ? j.citations : []
-});
+    c.messages.push({
+      role:'assistant',
+      text:j.text || 'No response returned.',
+      citations:Array.isArray(j.citations) ? j.citations : []
+    });
 
-c.updated=Date.now();
-save();
-renderAll();
-
+    c.updated=Date.now();
+    save();
+    renderAll();
 
   }catch(e){
     if(e.name==='AbortError'){
@@ -771,7 +802,7 @@ function closeSidebar(){
   overlay.classList.remove('show');
 }
 
-  document.getElementById('fullBtn').onclick=()=>{
+document.getElementById('fullBtn').onclick=()=>{
   sidebar.classList.toggle('hidden');
 
   const btn=document.getElementById('fullBtn');
