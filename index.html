@@ -599,14 +599,6 @@ function markdown(s){
     '\n'
   );
 
-  /*
-    Protect Markdown links before converting
-    plain URLs.
-
-    Example:
-    [Copeland Manual](https://example.com/manual.pdf)
-  */
-
   const links=[];
 
   x=x.replace(
@@ -634,12 +626,6 @@ function markdown(s){
     .replace(/^# (.+)$/gm,'<h1>$1</h1>')
     .replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>')
     .replace(/`([^`\n]+)`/g,'<code>$1</code>');
-
-  /*
-    Convert plain URLs.
-    Strip sentence punctuation that does not
-    belong to the URL.
-  */
 
   x=x.replace(
     /https?:\/\/[^\s<]+/g,
@@ -680,10 +666,6 @@ function markdown(s){
       );
     }
   );
-
-  /*
-    Restore the Markdown links.
-  */
 
   links.forEach((link,index)=>{
 
