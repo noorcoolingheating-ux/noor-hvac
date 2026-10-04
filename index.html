@@ -7,209 +7,499 @@
 <title>NOOR HVAC</title>
 
 <style>
+:root{
+  --blue:#075aa6;
+  --blue-dark:#05477f;
+  --blue-soft:#eaf3fb;
+  --red:#d8232a;
+  --text:#172033;
+  --muted:#6b7280;
+  --border:#e3e8ef;
+  --sidebar:#f7f9fb;
+  --assistant:#f3f6f9;
+  --white:#fff;
+  --shadow:0 8px 30px rgba(20,35,55,.08);
+}
+
 *{box-sizing:border-box}
-html,body{margin:0;height:100%;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#172033;background:#fff}
+
+html,body{
+  margin:0;
+  height:100%;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  color:var(--text);
+  background:#fff;
+}
+
 button,textarea{font:inherit}
 button{cursor:pointer}
-.app{height:100dvh;display:flex;overflow:hidden}
 
-/* SIDEBAR */
+.app{
+  height:100dvh;
+  display:flex;
+  overflow:hidden;
+}
+
+/* =========================
+   SIDEBAR
+========================= */
 
 .sidebar{
-  width:210px;
-  flex:0 0 210px;
-  background:#f4f6f8;
-  border-right:1px solid #ddd;
+  width:260px;
+  flex:0 0 260px;
+  background:var(--sidebar);
+  border-right:1px solid var(--border);
   display:flex;
-  flex-direction:column
+  flex-direction:column;
 }
 
 .sidebar.hidden{
   display:none;
 }
 
-.fullBtn{
+.sideTop{
+  padding:18px 14px 14px;
+  border-bottom:1px solid var(--border);
+}
+
+.logoWrap{
+  display:flex;
+  align-items:center;
+  gap:11px;
+  padding:2px 4px 17px;
+}
+
+.logoMark{
+  width:38px;
+  height:38px;
+  flex:0 0 38px;
+  border-radius:11px;
+  background:linear-gradient(145deg,var(--blue),var(--blue-dark));
+  color:#fff;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:20px;
+  font-weight:900;
+  box-shadow:0 5px 14px rgba(7,90,166,.22);
+}
+
+.logoText{
+  min-width:0;
+}
+
+.logo{
+  font-weight:900;
+  color:var(--blue);
+  font-size:17px;
+  line-height:1.1;
+  letter-spacing:.2px;
+}
+
+.logoSub{
+  margin-top:3px;
+  font-size:10px;
+  color:var(--muted);
+  font-weight:600;
+}
+
+.newChat{
+  width:100%;
+  height:43px;
   border:0;
-  background:#eef2f6;
-  color:#075aa6;
-  border-radius:9px;
-  padding:8px 11px;
+  border-radius:11px;
+  background:var(--blue);
+  color:#fff;
+  font-weight:800;
+  font-size:14px;
+  box-shadow:0 4px 12px rgba(7,90,166,.18);
+}
+
+.newChat:active{
+  transform:scale(.985);
+}
+
+.historyTitle{
+  padding:18px 16px 7px;
+  font-size:10px;
+  letter-spacing:.9px;
+  color:#8a94a3;
+  font-weight:800;
+}
+
+.chatList{
+  overflow:auto;
+  flex:1;
+  padding:4px 8px 20px;
+}
+
+.chatItem{
+  min-height:43px;
+  padding:8px 8px 8px 11px;
+  margin:3px 0;
+  border-radius:10px;
+  display:flex;
+  align-items:center;
+  gap:3px;
+  border:1px solid transparent;
+}
+
+.chatItem:hover{
+  background:#eef3f7;
+}
+
+.chatItem.active{
+  background:#e8f1fa;
+  border-color:#d4e4f3;
+}
+
+.chatItem.active .chatTitle{
+  color:var(--blue);
   font-weight:700;
 }
 
-.sideTop{padding:15px}
-.historyTitle{padding:10px 15px 5px;font-size:12px;color:#667085;font-weight:700}
-.chatList{overflow:auto;flex:1;padding:5px 8px 20px}
-.chatItem{
-  padding:10px;
-  margin:3px 0;
-  border-radius:9px;
-  display:flex;
-  align-items:center;
-  gap:5px
-}
-.chatItem:hover,.chatItem.active{background:#e3e8ee}
 .chatTitle{
   flex:1;
   overflow:hidden;
   text-overflow:ellipsis;
   white-space:nowrap;
-  font-size:14px
+  font-size:13px;
+  color:#3c4655;
 }
+
 .smallBtn{
   border:0;
   background:transparent;
-  color:#667085;
-  padding:3px 5px;
-  font-size:14px
+  color:#8b95a3;
+  padding:4px 5px;
+  font-size:14px;
+  border-radius:6px;
 }
 
-/* MAIN */
+.smallBtn:hover{
+  background:rgba(0,0,0,.05);
+  color:#374151;
+}
 
-.main{flex:1;min-width:0;display:flex;flex-direction:column}
+/* =========================
+   MAIN
+========================= */
+
+.main{
+  flex:1;
+  min-width:0;
+  display:flex;
+  flex-direction:column;
+  background:#fff;
+}
 
 .header{
-  height:62px;
-  border-bottom:1px solid #e5e7eb;
+  height:68px;
+  flex:0 0 68px;
+  border-bottom:1px solid var(--border);
   display:flex;
   align-items:center;
-  padding:0 18px;
-  gap:12px
+  padding:0 22px;
+  gap:12px;
+  background:rgba(255,255,255,.96);
 }
 
 .menu{
   display:none;
+  width:40px;
+  height:40px;
   border:0;
-  background:transparent;
-  font-size:24px
+  border-radius:10px;
+  background:#f3f6f9;
+  color:var(--text);
+  font-size:21px;
 }
 
-.headerText{font-weight:800;font-size:18px}
-.tag{font-size:12px;color:#667085;margin-left:auto}
+.fullBtn{
+  border:1px solid #dce3ea;
+  background:#f7f9fb;
+  color:var(--blue);
+  border-radius:9px;
+  padding:8px 12px;
+  font-size:12px;
+  font-weight:800;
+}
+
+.headerIdentity{
+  display:flex;
+  align-items:center;
+  gap:9px;
+}
+
+.statusDot{
+  width:8px;
+  height:8px;
+  border-radius:50%;
+  background:var(--red);
+  box-shadow:0 0 0 4px rgba(216,35,42,.08);
+}
+
+.headerText{
+  font-weight:900;
+  font-size:17px;
+  color:#172033;
+}
+
+.tag{
+  font-size:11px;
+  color:#7b8492;
+  margin-left:auto;
+  font-weight:600;
+}
+
+/* =========================
+   MESSAGES
+========================= */
 
 .messages{
   flex:1;
   overflow:auto;
-  padding:25px max(18px,calc((100% - 760px)/2));
-  padding-bottom:150px
+  padding:
+    32px
+    max(22px,calc((100% - 820px)/2))
+    160px;
+  scroll-behavior:smooth;
 }
 
 .welcome{
-  max-width:700px;
-  margin:60px auto;
-  text-align:center
+  max-width:610px;
+  margin:90px auto 0;
+  text-align:center;
 }
 
-.welcome h1{font-size:30px;margin-bottom:8px;color:#075aa6}
-.welcome p{color:#667085;line-height:1.5}
+.welcomeMark{
+  width:72px;
+  height:72px;
+  margin:0 auto 21px;
+  border-radius:21px;
+  background:linear-gradient(145deg,var(--blue),var(--blue-dark));
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:#fff;
+  font-size:38px;
+  font-weight:900;
+  box-shadow:0 12px 32px rgba(7,90,166,.22);
+}
 
-.row{margin:18px 0}
-.row.user{text-align:right}
+.welcome h1{
+  font-size:31px;
+  margin:0 0 10px;
+  color:#172033;
+  letter-spacing:-.6px;
+}
+
+.welcome p{
+  color:#7a8492;
+  line-height:1.6;
+  margin:0;
+  font-size:15px;
+}
+
+.welcomeLine{
+  width:42px;
+  height:3px;
+  background:var(--red);
+  border-radius:20px;
+  margin:20px auto 0;
+}
+
+.row{
+  margin:20px 0;
+  display:flex;
+}
+
+.row.user{
+  justify-content:flex-end;
+}
+
+.row.assistant{
+  justify-content:flex-start;
+}
 
 .bubble{
   display:inline-block;
-  max-width:85%;
+  max-width:82%;
   text-align:left;
-  padding:12px 15px;
+  padding:13px 16px;
   border-radius:17px;
-  line-height:1.5;
+  line-height:1.55;
   white-space:normal;
-  overflow-wrap:anywhere
+  overflow-wrap:anywhere;
+  font-size:15px;
 }
 
-.user .bubble{background:#075aa6;color:#fff}
-.assistant .bubble{background:#f1f4f7;color:#172033}
+.user .bubble{
+  background:var(--blue);
+  color:#fff;
+  border-bottom-right-radius:5px;
+  box-shadow:0 5px 14px rgba(7,90,166,.12);
+}
+
+.assistant .bubble{
+  background:var(--assistant);
+  color:var(--text);
+  border:1px solid #e8edf2;
+  border-bottom-left-radius:5px;
+}
 
 .messageImage{
   display:block;
-  max-width:320px;
+  max-width:340px;
   width:100%;
   height:auto;
   border-radius:12px;
-  margin-bottom:8px
+  margin-bottom:10px;
+  border:1px solid rgba(255,255,255,.25);
 }
 
 .msgActions{
-  margin-top:6px;
-  font-size:12px;
-  opacity:.72
+  margin-top:8px;
+  padding-top:2px;
+  font-size:11px;
+  opacity:.67;
 }
 
 .msgActions button{
   border:0;
   background:transparent;
   color:inherit;
-  padding:2px 6px;
-  text-decoration:underline
+  padding:2px 8px 2px 0;
+  margin-right:7px;
+  font-size:11px;
+  font-weight:700;
 }
 
-.assistant p{margin:0 0 10px}
-.assistant p:last-child{margin-bottom:0}
-.assistant ul,.assistant ol{padding-left:22px;margin:8px 0}
-.assistant li{margin:5px 0}
-.assistant h1,.assistant h2,.assistant h3{margin:10px 0 6px}
+.msgActions button:hover{
+  text-decoration:underline;
+}
+
+.assistant p{
+  margin:0 0 10px;
+}
+
+.assistant p:last-child{
+  margin-bottom:0;
+}
+
+.assistant ul,
+.assistant ol{
+  padding-left:22px;
+  margin:9px 0;
+}
+
+.assistant li{
+  margin:5px 0;
+}
+
+.assistant h1,
+.assistant h2,
+.assistant h3{
+  margin:12px 0 7px;
+  line-height:1.25;
+}
+
+.assistant h1{font-size:22px}
+.assistant h2{font-size:19px}
+.assistant h3{font-size:16px}
+
+.assistant a{
+  color:var(--blue);
+  text-decoration:underline;
+  text-underline-offset:2px;
+  overflow-wrap:anywhere;
+}
 
 .assistant code{
   background:#dfe6ed;
   padding:2px 5px;
-  border-radius:5px
+  border-radius:5px;
 }
 
 .assistant pre{
   white-space:pre-wrap;
   background:#1f2937;
   color:#fff;
-  padding:12px;
+  padding:13px;
   border-radius:10px;
-  overflow:auto
+  overflow:auto;
 }
 
-/* COMPOSER */
+/* =========================
+   COMPOSER
+========================= */
 
 .bottom{
   position:relative;
-  background:linear-gradient(transparent,#fff 20%);
-  padding:20px max(12px,calc((100% - 780px)/2)) max(12px,env(safe-area-inset-bottom))
+  background:linear-gradient(
+    to bottom,
+    rgba(255,255,255,0),
+    rgba(255,255,255,.94) 24%,
+    #fff 45%
+  );
+  padding:
+    26px
+    max(16px,calc((100% - 820px)/2))
+    max(15px,env(safe-area-inset-bottom));
 }
 
 .status{
-  font-size:12px;
-  color:#667085;
+  font-size:11px;
+  color:#748091;
   min-height:18px;
-  padding:0 10px 5px
+  padding:0 12px 5px;
+  font-weight:600;
 }
 
 .preview{
   display:none;
-  padding:8px 10px;
-  border:1px solid #ddd;
+  padding:9px 11px;
+  border:1px solid #d9e0e7;
   border-bottom:0;
   border-radius:16px 16px 0 0;
-  background:#fff
+  background:#fff;
 }
 
 .preview img{
   height:65px;
   max-width:100px;
   object-fit:cover;
-  border-radius:8px
+  border-radius:9px;
 }
 
 .preview button{
   border:0;
-  background:transparent;
-  margin-left:8px
+  background:#f3f6f9;
+  color:#5e6876;
+  margin-left:9px;
+  padding:7px 10px;
+  border-radius:8px;
+  font-size:11px;
+  font-weight:700;
 }
 
 .composer{
-  border:1px solid #cfd5dc;
+  min-height:62px;
+  border:1px solid #ccd5df;
   border-radius:18px;
   display:flex;
   align-items:flex-end;
-  gap:7px;
+  gap:8px;
   padding:8px;
   background:#fff;
-  box-shadow:0 3px 15px rgba(0,0,0,.06)
+  box-shadow:var(--shadow);
+}
+
+.composer:focus-within{
+  border-color:#8ab8de;
+  box-shadow:
+    0 0 0 3px rgba(7,90,166,.07),
+    var(--shadow);
 }
 
 textarea{
@@ -220,53 +510,159 @@ textarea{
   min-height:44px;
   max-height:150px;
   padding:11px 7px;
-  font-size:16px
+  font-size:16px;
+  line-height:1.4;
+  color:var(--text);
+  background:transparent;
+}
+
+textarea::placeholder{
+  color:#9aa3af;
 }
 
 .iconBtn{
   border:0;
   border-radius:11px;
-  min-width:44px;
+  min-width:46px;
   height:44px;
-  padding:0 10px;
-  background:#eef2f6;
-  color:#075aa6;
-  font-weight:700
+  padding:0 11px;
+  background:#eef3f7;
+  color:var(--blue);
+  font-size:12px;
+  font-weight:800;
 }
 
-.send{background:#d8232a;color:#fff}
-.stop{background:#333;color:#fff;display:none}
-input[type=file]{display:none}
+.iconBtn:hover{
+  background:#e5edf4;
+}
 
-.overlay{display:none}
+.send{
+  background:var(--red);
+  color:#fff;
+  min-width:60px;
+}
 
-/* MOBILE */
+.send:hover{
+  background:#c91f26;
+}
+
+.stop{
+  background:#333;
+  color:#fff;
+  display:none;
+}
+
+input[type=file]{
+  display:none;
+}
+
+.overlay{
+  display:none;
+}
+
+/* =========================
+   MOBILE / IPAD
+========================= */
 
 @media(max-width:700px){
+
   .sidebar{
     position:fixed;
     z-index:30;
     left:-290px;
     top:0;
     bottom:0;
+    width:260px;
     transition:.2s;
-    box-shadow:4px 0 20px rgba(0,0,0,.15)
+    box-shadow:4px 0 24px rgba(0,0,0,.18);
   }
 
-  .sidebar.open{left:0}
+  .sidebar.open{
+    left:0;
+  }
 
   .overlay{
     position:fixed;
     inset:0;
-    background:rgba(0,0,0,.28);
-    z-index:20
+    background:rgba(12,20,30,.34);
+    z-index:20;
+    backdrop-filter:blur(1px);
   }
 
-  .overlay.show{display:block}
-  .menu{display:block}
-  .tag{display:none}
-  .messages{padding-left:14px;padding-right:14px}
-  .bubble{max-width:92%}
+  .overlay.show{
+    display:block;
+  }
+
+  .menu{
+    display:block;
+  }
+
+  .tag{
+    display:none;
+  }
+
+  .header{
+    height:62px;
+    flex-basis:62px;
+    padding:0 12px;
+    gap:8px;
+  }
+
+  .headerText{
+    font-size:15px;
+  }
+
+  .fullBtn{
+    padding:7px 9px;
+    font-size:11px;
+  }
+
+  .messages{
+    padding:
+      22px
+      14px
+      145px;
+  }
+
+  .welcome{
+    margin-top:65px;
+  }
+
+  .welcomeMark{
+    width:64px;
+    height:64px;
+    border-radius:18px;
+    font-size:33px;
+  }
+
+  .welcome h1{
+    font-size:27px;
+  }
+
+  .bubble{
+    max-width:92%;
+    font-size:14px;
+  }
+
+  .bottom{
+    padding:
+      22px
+      10px
+      max(10px,env(safe-area-inset-bottom));
+  }
+
+  .composer{
+    border-radius:16px;
+  }
+
+  .iconBtn{
+    min-width:43px;
+    padding:0 9px;
+  }
+
+  .send{
+    min-width:55px;
+  }
 }
 </style>
 </head>
@@ -276,13 +672,30 @@ input[type=file]{display:none}
 <div class="app">
 
 <aside id="sidebar" class="sidebar">
+
   <div class="sideTop">
-    <div class="logo">NOOR HVAC</div>
-    <button id="newChat" class="newChat">+ New Chat</button>
+
+    <div class="logoWrap">
+      <div class="logoMark">N</div>
+
+      <div class="logoText">
+        <div class="logo">NOOR HVAC</div>
+        <div class="logoSub">TECHNICAL ASSISTANT</div>
+      </div>
+    </div>
+
+    <button id="newChat" class="newChat">
+      + New Chat
+    </button>
+
   </div>
 
-  <div class="historyTitle">CONVERSATIONS</div>
+  <div class="historyTitle">
+    CONVERSATIONS
+  </div>
+
   <div id="chatList" class="chatList"></div>
+
 </aside>
 
 <div id="overlay" class="overlay"></div>
@@ -290,10 +703,24 @@ input[type=file]{display:none}
 <section class="main">
 
   <header class="header">
-    <button id="menu" class="menu">☰</button>
-    <button id="fullBtn" class="fullBtn">Full Screen</button>
-    <div class="headerText">NOOR HVAC</div>
-    <div class="tag">Technician You Can Trust</div>
+
+    <button id="menu" class="menu">
+      ☰
+    </button>
+
+    <button id="fullBtn" class="fullBtn">
+      Full Screen
+    </button>
+
+    <div class="headerIdentity">
+      <span class="statusDot"></span>
+      <div class="headerText">NOOR HVAC</div>
+    </div>
+
+    <div class="tag">
+      Technician You Can Trust
+    </div>
+
   </header>
 
   <main id="messages" class="messages"></main>
@@ -304,24 +731,49 @@ input[type=file]{display:none}
 
     <div id="preview" class="preview">
       <img id="previewImg">
-      <button id="removePhoto">Remove photo</button>
+      <button id="removePhoto">
+        Remove photo
+      </button>
     </div>
 
     <div class="composer">
 
-      <label for="file" class="iconBtn" title="Attach photo">Photo</label>
-      <input id="file" type="file" accept="image/*">
+      <label
+        for="file"
+        class="iconBtn"
+        title="Attach photo"
+      >
+        Photo
+      </label>
+
+      <input
+        id="file"
+        type="file"
+        accept="image/*"
+      >
 
       <textarea
         id="text"
-        placeholder="Message NOOR HVAC..."
+        placeholder="Ask NOOR HVAC..."
         rows="1"
       ></textarea>
 
-      <button id="stop" class="iconBtn stop">Stop</button>
-      <button id="send" class="iconBtn send">Send</button>
+      <button
+        id="stop"
+        class="iconBtn stop"
+      >
+        Stop
+      </button>
+
+      <button
+        id="send"
+        class="iconBtn send"
+      >
+        Send
+      </button>
 
     </div>
+
   </div>
 
 </section>
@@ -728,11 +1180,20 @@ function renderMessages(){
 
     messagesEl.innerHTML=`
       <div class="welcome">
+
+        <div class="welcomeMark">
+          N
+        </div>
+
         <h1>NOOR HVAC</h1>
+
         <p>
-          HVAC/R technical assistant.<br>
+          HVAC/R Technical Assistant<br>
           Ask a question or attach an equipment photo.
         </p>
+
+        <div class="welcomeLine"></div>
+
       </div>
     `;
 
