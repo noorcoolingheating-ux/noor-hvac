@@ -74,16 +74,14 @@ button{cursor:pointer}
   height:38px;
   flex:0 0 38px;
   border-radius:11px;
-  overflow:hidden;
-  background:#fff;
+  background:linear-gradient(145deg,var(--blue),var(--blue-dark));
+  color:#fff;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:20px;
+  font-weight:900;
   box-shadow:0 5px 14px rgba(7,90,166,.22);
-}
-
-.logoMark img{
-  width:100%;
-  height:100%;
-  display:block;
-  object-fit:cover;
 }
 
 .logoText{
@@ -275,20 +273,18 @@ button{cursor:pointer}
 }
 
 .welcomeMark{
-  width:90px;
-  height:90px;
+  width:72px;
+  height:72px;
   margin:0 auto 21px;
-  border-radius:22px;
-  overflow:hidden;
-  background:#fff;
+  border-radius:21px;
+  background:linear-gradient(145deg,var(--blue),var(--blue-dark));
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:#fff;
+  font-size:38px;
+  font-weight:900;
   box-shadow:0 12px 32px rgba(7,90,166,.22);
-}
-
-.welcomeMark img{
-  width:100%;
-  height:100%;
-  display:block;
-  object-fit:cover;
 }
 
 .welcome h1{
@@ -384,4 +380,1408 @@ button{cursor:pointer}
 }
 
 .assistant p{
-  margin:0 0
+  margin:0 0 10px;
+}
+
+.assistant p:last-child{
+  margin-bottom:0;
+}
+
+.assistant ul,
+.assistant ol{
+  padding-left:22px;
+  margin:9px 0;
+}
+
+.assistant li{
+  margin:5px 0;
+}
+
+.assistant h1,
+.assistant h2,
+.assistant h3{
+  margin:12px 0 7px;
+  line-height:1.25;
+}
+
+.assistant h1{font-size:22px}
+.assistant h2{font-size:19px}
+.assistant h3{font-size:16px}
+
+.assistant a{
+  color:var(--blue);
+  text-decoration:underline;
+  text-underline-offset:2px;
+  overflow-wrap:anywhere;
+}
+
+.assistant code{
+  background:#dfe6ed;
+  padding:2px 5px;
+  border-radius:5px;
+}
+
+.assistant pre{
+  white-space:pre-wrap;
+  background:#1f2937;
+  color:#fff;
+  padding:13px;
+  border-radius:10px;
+  overflow:auto;
+}
+
+/* =========================
+   COMPOSER
+========================= */
+
+.bottom{
+  position:relative;
+  background:linear-gradient(
+    to bottom,
+    rgba(255,255,255,0),
+    rgba(255,255,255,.94) 24%,
+    #fff 45%
+  );
+  padding:
+    26px
+    max(16px,calc((100% - 820px)/2))
+    max(15px,env(safe-area-inset-bottom));
+}
+
+.status{
+  font-size:11px;
+  color:#748091;
+  min-height:18px;
+  padding:0 12px 5px;
+  font-weight:600;
+}
+
+.preview{
+  display:none;
+  padding:9px 11px;
+  border:1px solid #d9e0e7;
+  border-bottom:0;
+  border-radius:16px 16px 0 0;
+  background:#fff;
+}
+
+.preview img{
+  height:65px;
+  max-width:100px;
+  object-fit:cover;
+  border-radius:9px;
+}
+
+.preview button{
+  border:0;
+  background:#f3f6f9;
+  color:#5e6876;
+  margin-left:9px;
+  padding:7px 10px;
+  border-radius:8px;
+  font-size:11px;
+  font-weight:700;
+}
+
+.composer{
+  min-height:62px;
+  border:1px solid #ccd5df;
+  border-radius:18px;
+  display:flex;
+  align-items:flex-end;
+  gap:8px;
+  padding:8px;
+  background:#fff;
+  box-shadow:var(--shadow);
+}
+
+.composer:focus-within{
+  border-color:#8ab8de;
+  box-shadow:
+    0 0 0 3px rgba(7,90,166,.07),
+    var(--shadow);
+}
+
+textarea{
+  flex:1;
+  border:0;
+  outline:0;
+  resize:none;
+  min-height:44px;
+  max-height:150px;
+  padding:11px 7px;
+  font-size:16px;
+  line-height:1.4;
+  color:var(--text);
+  background:transparent;
+}
+
+textarea::placeholder{
+  color:#9aa3af;
+}
+
+.iconBtn{
+  border:0;
+  border-radius:11px;
+  min-width:46px;
+  height:44px;
+  padding:0 11px;
+  background:#eef3f7;
+  color:var(--blue);
+  font-size:12px;
+  font-weight:800;
+}
+
+.iconBtn:hover{
+  background:#e5edf4;
+}
+
+.send{
+  background:var(--red);
+  color:#fff;
+  min-width:60px;
+}
+
+.send:hover{
+  background:#c91f26;
+}
+
+.stop{
+  background:#333;
+  color:#fff;
+  display:none;
+}
+
+input[type=file]{
+  display:none;
+}
+
+.overlay{
+  display:none;
+}
+
+/* =========================
+   MOBILE / IPAD
+========================= */
+
+@media(max-width:700px){
+
+  .sidebar{
+    position:fixed;
+    z-index:30;
+    left:-290px;
+    top:0;
+    bottom:0;
+    width:260px;
+    transition:.2s;
+    box-shadow:4px 0 24px rgba(0,0,0,.18);
+  }
+
+  .sidebar.open{
+    left:0;
+  }
+
+  .overlay{
+    position:fixed;
+    inset:0;
+    background:rgba(12,20,30,.34);
+    z-index:20;
+    backdrop-filter:blur(1px);
+  }
+
+  .overlay.show{
+    display:block;
+  }
+
+  .menu{
+    display:block;
+  }
+
+  .tag{
+    display:none;
+  }
+
+  .header{
+    height:62px;
+    flex-basis:62px;
+    padding:0 12px;
+    gap:8px;
+  }
+
+  .headerText{
+    font-size:15px;
+  }
+
+  .fullBtn{
+    padding:7px 9px;
+    font-size:11px;
+  }
+
+  .messages{
+    padding:
+      22px
+      14px
+      145px;
+  }
+
+  .welcome{
+    margin-top:65px;
+  }
+
+  .welcomeMark{
+    width:64px;
+    height:64px;
+    border-radius:18px;
+    font-size:33px;
+  }
+
+  .welcome h1{
+    font-size:27px;
+  }
+
+  .bubble{
+    max-width:92%;
+    font-size:14px;
+  }
+
+  .bottom{
+    padding:
+      22px
+      10px
+      max(10px,env(safe-area-inset-bottom));
+  }
+
+  .composer{
+    border-radius:16px;
+  }
+
+  .iconBtn{
+    min-width:43px;
+    padding:0 9px;
+  }
+
+  .send{
+    min-width:55px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+<aside id="sidebar" class="sidebar">
+
+  <div class="sideTop">
+
+    <div class="logoWrap">
+      <div class="logoMark">N</div>
+
+      <div class="logoText">
+        <div class="logo">NOOR HVAC</div>
+        <div class="logoSub">TECHNICAL ASSISTANT</div>
+      </div>
+    </div>
+
+    <button id="newChat" class="newChat">
+      + New Chat
+    </button>
+
+  </div>
+
+  <div class="historyTitle">
+    CONVERSATIONS
+  </div>
+
+  <div id="chatList" class="chatList"></div>
+
+</aside>
+
+<div id="overlay" class="overlay"></div>
+
+<section class="main">
+
+  <header class="header">
+
+    <button id="menu" class="menu">
+      ☰
+    </button>
+
+    <button id="fullBtn" class="fullBtn">
+      Full Screen
+    </button>
+
+    <div class="headerIdentity">
+      <span class="statusDot"></span>
+      <div class="headerText">NOOR HVAC</div>
+    </div>
+
+    <div class="tag">
+      Technician You Can Trust
+    </div>
+
+  </header>
+
+  <main id="messages" class="messages"></main>
+
+  <div class="bottom">
+
+    <div id="status" class="status"></div>
+
+    <div id="preview" class="preview">
+      <img id="previewImg">
+      <button id="removePhoto">
+        Remove photo
+      </button>
+    </div>
+
+    <div class="composer">
+
+      <label
+        for="file"
+        class="iconBtn"
+        title="Attach photo"
+      >
+        Photo
+      </label>
+
+      <input
+        id="file"
+        type="file"
+        accept="image/*"
+      >
+
+      <textarea
+        id="text"
+        placeholder="Ask NOOR HVAC..."
+        rows="1"
+      ></textarea>
+
+      <button
+        id="stop"
+        class="iconBtn stop"
+      >
+        Stop
+      </button>
+
+      <button
+        id="send"
+        class="iconBtn send"
+      >
+        Send
+      </button>
+
+    </div>
+
+  </div>
+
+</section>
+</div>
+
+<script>
+
+const STORAGE_KEY='noor_hvac_conversations_v2';
+
+const messagesEl=document.getElementById('messages');
+const listEl=document.getElementById('chatList');
+const textEl=document.getElementById('text');
+const fileEl=document.getElementById('file');
+const statusEl=document.getElementById('status');
+const previewEl=document.getElementById('preview');
+const previewImg=document.getElementById('previewImg');
+const sendBtn=document.getElementById('send');
+const stopBtn=document.getElementById('stop');
+const sidebar=document.getElementById('sidebar');
+const overlay=document.getElementById('overlay');
+
+let conversations=[];
+let activeId=null;
+let imageData=null;
+let controller=null;
+
+/*
+  Images are kept in memory for the current page session.
+  They are NOT stored as huge base64 strings in localStorage.
+*/
+const messageImages=new Map();
+
+function id(){
+  return Date.now().toString(36)+Math.random().toString(36).slice(2,8);
+}
+
+function load(){
+
+  try{
+    conversations=JSON.parse(
+      localStorage.getItem(STORAGE_KEY)||'[]'
+    );
+
+    if(!Array.isArray(conversations)){
+      conversations=[];
+    }
+
+  }catch(e){
+    conversations=[];
+  }
+
+  /* Remove any old base64 images previously stored in localStorage */
+  let cleaned=false;
+
+  conversations.forEach(c=>{
+    if(!Array.isArray(c.messages)) return;
+
+    c.messages.forEach(m=>{
+      if(m && typeof m.image==='string' && m.image.startsWith('data:')){
+        delete m.image;
+        cleaned=true;
+      }
+    });
+  });
+
+  if(cleaned){
+    save();
+  }
+
+  /* Import old single-chat history if it exists */
+  try{
+
+    const old=JSON.parse(
+      localStorage.getItem('noor_hvac_history')||'[]'
+    );
+
+    if(
+      Array.isArray(old) &&
+      old.length &&
+      !conversations.length
+    ){
+      conversations.push({
+        id:id(),
+        title:titleFrom(old),
+        created:Date.now(),
+        updated:Date.now(),
+        messages:old
+      });
+
+      localStorage.removeItem('noor_hvac_history');
+      save();
+    }
+
+  }catch(e){}
+
+  if(conversations.length){
+
+    conversations.sort(
+      (a,b)=>(b.updated||0)-(a.updated||0)
+    );
+
+    activeId=conversations[0].id;
+
+  }else{
+    createConversation(false);
+  }
+}
+
+function save(){
+
+  /*
+    Store conversation text/history only.
+    Never put base64 image data into localStorage.
+  */
+
+  const safeConversations=conversations.map(c=>({
+    ...c,
+    messages:Array.isArray(c.messages)
+      ? c.messages.map(m=>{
+          const copy={...m};
+          delete copy.image;
+          return copy;
+        })
+      : []
+  }));
+
+  try{
+    localStorage.setItem(
+      STORAGE_KEY,
+      JSON.stringify(safeConversations)
+    );
+  }catch(e){
+    console.error('Conversation save failed:',e);
+  }
+}
+
+function current(){
+  return conversations.find(c=>c.id===activeId);
+}
+
+function imageKey(conversationId,messageId){
+  return conversationId+':'+messageId;
+}
+
+function titleFrom(msgs){
+
+  const first=msgs.find(
+    m=>m.role==='user' && m.text
+  );
+
+  if(!first){
+    return 'New conversation';
+  }
+
+  let t=first.text
+    .replace(/\s+/g,' ')
+    .trim();
+
+  return t.length>38
+    ? t.slice(0,38)+'…'
+    : t;
+}
+
+function createConversation(renderNow=true){
+
+  const c={
+    id:id(),
+    title:'New conversation',
+    created:Date.now(),
+    updated:Date.now(),
+    messages:[]
+  };
+
+  conversations.unshift(c);
+  activeId=c.id;
+
+  save();
+
+  if(renderNow){
+    renderAll();
+    closeSidebar();
+    textEl.focus();
+  }
+}
+
+function openConversation(cid){
+
+  activeId=cid;
+
+  const c=current();
+
+  if(c){
+    c.updated=Date.now();
+  }
+
+  save();
+  renderAll();
+  closeSidebar();
+}
+
+function renameConversation(cid){
+
+  const c=conversations.find(
+    x=>x.id===cid
+  );
+
+  if(!c) return;
+
+  const name=prompt(
+    'Rename conversation:',
+    c.title
+  );
+
+  if(name && name.trim()){
+    c.title=name.trim();
+    c.updated=Date.now();
+    save();
+    renderList();
+  }
+}
+
+function deleteConversation(cid){
+
+  const c=conversations.find(
+    x=>x.id===cid
+  );
+
+  if(!c) return;
+
+  if(!confirm('Delete "'+c.title+'"?')){
+    return;
+  }
+
+  conversations=conversations.filter(
+    x=>x.id!==cid
+  );
+
+  for(const key of messageImages.keys()){
+    if(key.startsWith(cid+':')){
+      messageImages.delete(key);
+    }
+  }
+
+  if(!conversations.length){
+    createConversation(false);
+  }
+
+  if(activeId===cid){
+    activeId=conversations[0].id;
+  }
+
+  save();
+  renderAll();
+}
+
+function esc(s){
+
+  return String(s??'').replace(
+    /[&<>"']/g,
+    ch=>({
+      '&':'&amp;',
+      '<':'&lt;',
+      '>':'&gt;',
+      '"':'&quot;',
+      "'":'&#39;'
+    }[ch])
+  );
+}
+
+function markdown(s){
+
+  let x=esc(s).replace(
+    /\r\n/g,
+    '\n'
+  );
+
+  x=x
+    .replace(/^### (.+)$/gm,'<h3>$1</h3>')
+    .replace(/^## (.+)$/gm,'<h2>$1</h2>')
+    .replace(/^# (.+)$/gm,'<h1>$1</h1>')
+    .replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>')
+    .replace(/`([^`\n]+)`/g,'<code>$1</code>')
+    .replace(
+      /(https?:\/\/[^\s<]+)/g,
+      '<a href="$1" target="_blank" rel="noopener noreferrer">$1</a>'
+    );
+
+  const lines=x.split('\n');
+
+  let out=[];
+  let list=false;
+
+  for(const line of lines){
+
+    const bullet=line.match(
+      /^\s*[-*] (.+)$/
+    );
+
+    if(bullet){
+
+      if(!list){
+        out.push('<ul>');
+        list=true;
+      }
+
+      out.push(
+        '<li>'+bullet[1]+'</li>'
+      );
+
+      continue;
+    }
+
+    if(list){
+      out.push('</ul>');
+      list=false;
+    }
+
+    if(/^<h[1-3]>/.test(line)){
+      out.push(line);
+
+    }else if(line.trim()){
+      out.push(
+        '<p>'+line+'</p>'
+      );
+    }
+  }
+
+  if(list){
+    out.push('</ul>');
+  }
+
+  return out.join('');
+}
+
+function renderList(){
+
+  listEl.innerHTML='';
+
+  const sorted=[...conversations].sort(
+    (a,b)=>(b.updated||0)-(a.updated||0)
+  );
+
+  sorted.forEach(c=>{
+
+    const row=document.createElement('div');
+
+    row.className=
+      'chatItem'+
+      (c.id===activeId?' active':'');
+
+    const title=document.createElement('div');
+
+    title.className='chatTitle';
+
+    title.textContent=
+      c.title ||
+      'New conversation';
+
+    title.onclick=()=>{
+      openConversation(c.id);
+    };
+
+    const rename=document.createElement('button');
+
+    rename.className='smallBtn';
+    rename.textContent='✎';
+    rename.title='Rename';
+
+    rename.onclick=e=>{
+      e.stopPropagation();
+      renameConversation(c.id);
+    };
+
+    const del=document.createElement('button');
+
+    del.className='smallBtn';
+    del.textContent='×';
+    del.title='Delete';
+
+    del.onclick=e=>{
+      e.stopPropagation();
+      deleteConversation(c.id);
+    };
+
+    row.append(
+      title,
+      rename,
+      del
+    );
+
+    listEl.appendChild(row);
+  });
+}
+
+function renderMessages(){
+
+  messagesEl.innerHTML='';
+
+  const c=current();
+
+  if(!c) return;
+
+  if(!c.messages.length){
+
+    messagesEl.innerHTML=`
+      <div class="welcome">
+
+        <div class="welcomeMark">
+          N
+        </div>
+
+        <h1>NOOR HVAC</h1>
+
+        <p>
+          HVAC/R Technical Assistant<br>
+          Ask a question or attach an equipment photo.
+        </p>
+
+        <div class="welcomeLine"></div>
+
+      </div>
+    `;
+
+    return;
+  }
+
+  c.messages.forEach((m,index)=>{
+
+    const row=document.createElement('div');
+
+    row.className=
+      'row '+
+      (m.role==='user'
+        ? 'user'
+        : 'assistant');
+
+    const bubble=document.createElement('div');
+
+    bubble.className='bubble';
+
+    if(m.role==='assistant'){
+
+      bubble.innerHTML=markdown(m.text);
+
+      const actions=document.createElement('div');
+
+      actions.className='msgActions';
+
+      const copy=document.createElement('button');
+
+      copy.textContent='Copy';
+
+      copy.onclick=()=>{
+        copyText(m.text);
+      };
+
+      const regen=document.createElement('button');
+
+      regen.textContent='Regenerate';
+
+      regen.onclick=()=>{
+        regenerate(index);
+      };
+
+      actions.append(
+        copy,
+        regen
+      );
+
+      bubble.appendChild(actions);
+
+    }else{
+
+      const storedImage=
+        m.id
+          ? messageImages.get(
+              imageKey(c.id,m.id)
+            )
+          : null;
+
+      if(storedImage){
+
+        const img=document.createElement('img');
+
+        img.className='messageImage';
+        img.src=storedImage;
+        img.alt='Uploaded HVAC/R photo';
+
+        bubble.appendChild(img);
+      }
+
+      if(m.text){
+
+        const content=document.createElement('div');
+
+        content.textContent=m.text;
+
+        bubble.appendChild(content);
+      }
+
+      const actions=document.createElement('div');
+
+      actions.className='msgActions';
+
+      const edit=document.createElement('button');
+
+      edit.textContent='Edit';
+
+      edit.onclick=()=>{
+        editMessage(index);
+      };
+
+      const copy=document.createElement('button');
+
+      copy.textContent='Copy';
+
+      copy.onclick=()=>{
+        copyText(m.text);
+      };
+
+      actions.append(
+        edit,
+        copy
+      );
+
+      bubble.appendChild(actions);
+    }
+
+    row.appendChild(bubble);
+
+    messagesEl.appendChild(row);
+  });
+
+  messagesEl.scrollTop=
+    messagesEl.scrollHeight;
+}
+
+function renderAll(){
+  renderList();
+  renderMessages();
+}
+
+async function copyText(t){
+
+  try{
+
+    await navigator.clipboard.writeText(t);
+
+    statusEl.textContent='Copied';
+
+    setTimeout(()=>{
+      statusEl.textContent='';
+    },1000);
+
+  }catch(e){}
+}
+
+function editMessage(index){
+
+  const c=current();
+
+  if(
+    !c ||
+    c.messages[index]?.role!=='user'
+  ){
+    return;
+  }
+
+  const old=c.messages[index].text;
+
+  /*
+    Editing branches from this point.
+  */
+  c.messages=
+    c.messages.slice(0,index);
+
+  c.updated=Date.now();
+
+  save();
+  renderAll();
+
+  textEl.value=old;
+
+  autoSize();
+
+  textEl.focus();
+}
+
+async function regenerate(index){
+
+  const c=current();
+
+  if(
+    !c ||
+    c.messages[index]?.role!=='assistant'
+  ){
+    return;
+  }
+
+  let userIndex=index-1;
+
+  while(
+    userIndex>=0 &&
+    c.messages[userIndex].role!=='user'
+  ){
+    userIndex--;
+  }
+
+  if(userIndex<0){
+    return;
+  }
+
+  const userMessage=
+    c.messages[userIndex];
+
+  const userText=
+    userMessage.text;
+
+  const userImage=
+    userMessage.id
+      ? messageImages.get(
+          imageKey(c.id,userMessage.id)
+        ) || null
+      : null;
+
+  const previous=
+    c.messages.slice(0,userIndex);
+
+  c.messages=
+    c.messages.slice(0,index);
+
+  save();
+  renderAll();
+
+  await requestAI(
+    userText,
+    userImage,
+    previous
+  );
+}
+
+function autoTitle(c){
+
+  if(c.title==='New conversation'){
+    c.title=titleFrom(c.messages);
+  }
+}
+
+function autoSize(){
+
+  textEl.style.height='auto';
+
+  textEl.style.height=
+    Math.min(
+      textEl.scrollHeight,
+      150
+    )+'px';
+}
+
+textEl.addEventListener(
+  'input',
+  autoSize
+);
+
+fileEl.onchange=()=>{
+
+  const f=fileEl.files[0];
+
+  if(!f){
+    return;
+  }
+
+  if(!f.type.startsWith('image/')){
+
+    statusEl.textContent=
+      'Please choose an image.';
+
+    fileEl.value='';
+
+    return;
+  }
+
+  const reader=new FileReader();
+
+  reader.onload=()=>{
+
+    imageData=String(
+      reader.result || ''
+    );
+
+    previewImg.src=imageData;
+
+    previewEl.style.display='flex';
+
+    previewEl.style.alignItems='center';
+
+    statusEl.textContent=
+      'Photo attached';
+  };
+
+  reader.onerror=()=>{
+
+    imageData=null;
+
+    fileEl.value='';
+
+    previewImg.removeAttribute('src');
+
+    previewEl.style.display='none';
+
+    statusEl.textContent=
+      'Could not read photo.';
+  };
+
+  reader.readAsDataURL(f);
+};
+
+document.getElementById(
+  'removePhoto'
+).onclick=()=>{
+
+  imageData=null;
+
+  fileEl.value='';
+
+  previewImg.removeAttribute('src');
+
+  previewEl.style.display='none';
+
+  statusEl.textContent='';
+};
+
+async function send(){
+
+  if(controller){
+    return;
+  }
+
+  const q=textEl.value.trim();
+
+  if(!q && !imageData){
+    return;
+  }
+
+  const c=current();
+
+  if(!c){
+    return;
+  }
+
+  const userText=
+    q ||
+    'Analyze this HVAC/R equipment photo.';
+
+  const previous=
+    c.messages.map(m=>({
+      role:m.role,
+      text:m.text
+    }));
+
+  const img=imageData;
+
+  const messageId=id();
+
+  c.messages.push({
+    id:messageId,
+    role:'user',
+    text:userText
+  });
+
+  /*
+    Keep the image in page memory only.
+    Do not store the base64 image in localStorage.
+  */
+  if(img){
+    messageImages.set(
+      imageKey(c.id,messageId),
+      img
+    );
+  }
+
+  c.updated=Date.now();
+
+  autoTitle(c);
+
+  save();
+
+  renderAll();
+
+  textEl.value='';
+
+  autoSize();
+
+  imageData=null;
+
+  fileEl.value='';
+
+  previewImg.removeAttribute('src');
+
+  previewEl.style.display='none';
+
+  await requestAI(
+    userText,
+    img,
+    previous
+  );
+}
+
+async function requestAI(
+  userText,
+  img,
+  previous
+){
+
+  controller=
+    new AbortController();
+
+  sendBtn.style.display='none';
+
+  stopBtn.style.display='block';
+
+  statusEl.textContent=
+    'NOOR HVAC is thinking...';
+
+  try{
+
+    const r=await fetch(
+      '/api/chat',
+      {
+        method:'POST',
+
+        headers:{
+          'Content-Type':
+            'application/json'
+        },
+
+        signal:
+          controller.signal,
+
+        body:JSON.stringify({
+          message:userText,
+          image:img || null,
+          history:previous
+        })
+      }
+    );
+
+    let j;
+
+    try{
+      j=await r.json();
+    }catch(parseError){
+      throw new Error(
+        'Server returned an invalid response.'
+      );
+    }
+
+    if(!r.ok){
+
+      throw new Error(
+        j?.error ||
+        'Request failed'
+      );
+    }
+
+    const c=current();
+
+    if(!c){
+      return;
+    }
+
+    c.messages.push({
+      id:id(),
+      role:'assistant',
+      text:
+        j.text ||
+        'No response returned.',
+      citations:
+        Array.isArray(j.citations)
+          ? j.citations
+          : []
+    });
+
+    c.updated=Date.now();
+
+    save();
+
+    renderAll();
+
+  }catch(e){
+
+    if(e.name==='AbortError'){
+
+      statusEl.textContent=
+        'Stopped';
+
+    }else{
+
+      console.error(
+        'NOOR HVAC request error:',
+        e
+      );
+
+      statusEl.textContent=
+        'Error: '+
+        (
+          e?.message ||
+          'Request failed'
+        );
+    }
+
+  }finally{
+
+    controller=null;
+
+    sendBtn.style.display='block';
+
+    stopBtn.style.display='none';
+
+    if(
+      statusEl.textContent===
+      'NOOR HVAC is thinking...'
+    ){
+      statusEl.textContent='';
+    }
+  }
+}
+
+stopBtn.onclick=()=>{
+
+  if(controller){
+    controller.abort();
+  }
+};
+
+sendBtn.onclick=()=>{
+  send();
+};
+
+textEl.addEventListener(
+  'keydown',
+  e=>{
+
+    if(
+      e.key==='Enter' &&
+      !e.shiftKey
+    ){
+      e.preventDefault();
+      send();
+    }
+  }
+);
+
+document.getElementById(
+  'newChat'
+).onclick=()=>{
+
+  createConversation(true);
+};
+
+document.getElementById(
+  'menu'
+).onclick=()=>{
+
+  sidebar.classList.add('open');
+
+  overlay.classList.add('show');
+};
+
+overlay.onclick=
+  closeSidebar;
+
+function closeSidebar(){
+
+  sidebar.classList.remove('open');
+
+  overlay.classList.remove('show');
+}
+
+document.getElementById(
+  'fullBtn'
+).onclick=()=>{
+
+  sidebar.classList.toggle(
+    'hidden'
+  );
+
+  const btn=
+    document.getElementById(
+      'fullBtn'
+    );
+
+  if(
+    sidebar.classList.contains(
+      'hidden'
+    )
+  ){
+    btn.textContent='Show History';
+
+  }else{
+    btn.textContent='Full Screen';
+  }
+};
+
+load();
+renderAll();
+
+</script>
+
+</body>
+</html>
