@@ -1,1 +1,16 @@
-{"name":"NOOR HVAC","short_name":"NOOR HVAC","start_url":"/","display":"standalone","background_color":"#ffffff","theme_color":"#075aa6"}
+{
+  "name": "NOOR HVAC",
+  "short_name": "NOOR HVAC",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#075aa6",
+  "icons": [
+    {
+      "src": "/51171EC4-DA92-47BF-B029-3C5980180F45.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
