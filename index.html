@@ -1074,7 +1074,18 @@ function esc(s){
 
 function markdown(s){
 
-  let x=esc(s).replace(
+  let x=esc(s)
+  .replace(/\\\[/g,'')
+  .replace(/\\\]/g,'')
+  .replace(/\\\(/g,'')
+  .replace(/\\\)/g,'')
+  .replace(/\\text\{([^{}]*)\}/g,'$1')
+  .replace(/\\boxed\{([^{}]*)\}/g,'$1')
+  .replace(/\\mathrm\{([^{}]*)\}/g,'$1')
+  .replace(/\\times/g,'×')
+  .replace(/\\cdot/g,'·')
+  .replace(/\\pm/g,'±')
+  .replace(
     /\r\n/g,
     '\n'
   );
