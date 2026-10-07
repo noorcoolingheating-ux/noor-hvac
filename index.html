@@ -14,7 +14,6 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="NOOR HVAC">
 
-
 <style>
 :root{
   --blue:#075aa6;
@@ -1479,6 +1478,19 @@ textEl.addEventListener(
   autoSize
 );
 
+/*
+  PHOTO HANDLING
+
+  The original app sent the full-resolution photo directly
+  as a base64 data URL.
+
+  Large iPhone/iPad photos can make the /api/chat request
+  too large for Vercel and produce HTTP 413.
+
+  This keeps the existing photo workflow but reduces only
+  oversized photos before they are assigned to imageData.
+*/
+
 fileEl.onchange=()=>{
 
   const f=fileEl.files[0];
@@ -1497,22 +1509,147 @@ fileEl.onchange=()=>{
     return;
   }
 
+  statusEl.textContent=
+    'Preparing photo...';
+
   const reader=new FileReader();
 
   reader.onload=()=>{
 
-    imageData=String(
-      reader.result || ''
-    );
+    const originalData=
+      String(reader.result || '');
 
-    previewImg.src=imageData;
+    const photo=
+      new Image();
 
-    previewEl.style.display='flex';
+    photo.onload=()=>{
 
-    previewEl.style.alignItems='center';
+      const MAX_DIMENSION=1600;
 
-    statusEl.textContent=
-      'Photo attached';
+      let width=
+        photo.naturalWidth;
+
+      let height=
+        photo.naturalHeight;
+
+      if(
+        width>MAX_DIMENSION ||
+        height>MAX_DIMENSION
+      ){
+
+        const scale=
+          Math.min(
+            MAX_DIMENSION/width,
+            MAX_DIMENSION/height
+          );
+
+        width=
+          Math.round(
+            width*scale
+          );
+
+        height=
+          Math.round(
+            height*scale
+          );
+      }
+
+      const canvas=
+        document.createElement(
+          'canvas'
+        );
+
+      canvas.width=width;
+      canvas.height=height;
+
+      const ctx=
+        canvas.getContext('2d');
+
+      if(!ctx){
+
+        imageData=
+          originalData;
+
+        previewImg.src=
+          imageData;
+
+        previewEl.style.display=
+          'flex';
+
+        previewEl.style.alignItems=
+          'center';
+
+        statusEl.textContent=
+          'Photo attached';
+
+        return;
+      }
+
+      ctx.drawImage(
+        photo,
+        0,
+        0,
+        width,
+        height
+      );
+
+      /*
+        Keep enough detail for HVAC/R equipment,
+        nameplates, displays and wiring labels.
+      */
+      imageData=
+        canvas.toDataURL(
+          'image/jpeg',
+          0.82
+        );
+
+      /*
+        If the encoded photo is still unusually large,
+        compress it one additional time.
+      */
+      if(
+        imageData.length>
+        3000000
+      ){
+        imageData=
+          canvas.toDataURL(
+            'image/jpeg',
+            0.68
+          );
+      }
+
+      previewImg.src=
+        imageData;
+
+      previewEl.style.display=
+        'flex';
+
+      previewEl.style.alignItems=
+        'center';
+
+      statusEl.textContent=
+        'Photo attached';
+    };
+
+    photo.onerror=()=>{
+
+      imageData=null;
+
+      fileEl.value='';
+
+      previewImg.removeAttribute(
+        'src'
+      );
+
+      previewEl.style.display=
+        'none';
+
+      statusEl.textContent=
+        'Could not process photo.';
+    };
+
+    photo.src=
+      originalData;
   };
 
   reader.onerror=()=>{
@@ -1521,9 +1658,12 @@ fileEl.onchange=()=>{
 
     fileEl.value='';
 
-    previewImg.removeAttribute('src');
+    previewImg.removeAttribute(
+      'src'
+    );
 
-    previewEl.style.display='none';
+    previewEl.style.display=
+      'none';
 
     statusEl.textContent=
       'Could not read photo.';
