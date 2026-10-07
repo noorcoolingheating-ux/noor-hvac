@@ -310,7 +310,24 @@ ${memory || 'No additional saved memory was supplied.'}
       }
     );
 
-    const data = await response.json();
+    const rawResponse = await response.text();
+
+let data;
+
+try {
+  data = JSON.parse(rawResponse);
+} catch (parseError) {
+  console.error(
+    'OpenAI returned non-JSON response:',
+    response.status,
+    rawResponse
+  );
+
+  return res.status(502).json({
+    error:
+      `OpenAI returned an invalid response (${response.status}).`
+  });
+}
 
     if (!response.ok) {
       return res.status(response.status).json({
