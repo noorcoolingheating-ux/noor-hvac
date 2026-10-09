@@ -26,12 +26,13 @@ module.exports = async (req, res) => {
     const input = [];
 
     /*
-      Send the existing conversation back to the model.
-      Limit the number of messages so extremely long chats
-      do not grow forever.
+      Send recent conversation context back to the model.
+      The full conversation remains saved in the app.
+      Only the most recent 24 messages are sent with each
+      API request to reduce unnecessary processing time.
     */
     const safeHistory = Array.isArray(history)
-      ? history.slice(-60)
+      ? history.slice(-24)
       : [];
 
     for (const item of safeHistory) {
@@ -312,22 +313,22 @@ ${memory || 'No additional saved memory was supplied.'}
 
     const rawResponse = await response.text();
 
-let data;
+    let data;
 
-try {
-  data = JSON.parse(rawResponse);
-} catch (parseError) {
-  console.error(
-    'OpenAI returned non-JSON response:',
-    response.status,
-    rawResponse
-  );
+    try {
+      data = JSON.parse(rawResponse);
+    } catch (parseError) {
+      console.error(
+        'OpenAI returned non-JSON response:',
+        response.status,
+        rawResponse
+      );
 
-  return res.status(502).json({
-    error:
-      `OpenAI returned an invalid response (${response.status}).`
-  });
-}
+      return res.status(502).json({
+        error:
+          `OpenAI returned an invalid response (${response.status}).`
+      });
+    }
 
     if (!response.ok) {
       return res.status(response.status).json({
