@@ -457,6 +457,36 @@ button{cursor:pointer}
 }
 
 /* =========================
+   SOURCE LINKS
+========================= */
+
+.citations{
+  margin-top:13px;
+  padding-top:11px;
+  border-top:1px solid #dce3ea;
+}
+
+.citationsTitle{
+  font-size:11px;
+  font-weight:800;
+  color:#697586;
+  margin-bottom:6px;
+  text-transform:uppercase;
+  letter-spacing:.4px;
+}
+
+.citationLink{
+  display:block;
+  margin:5px 0;
+  color:var(--blue);
+  font-size:13px;
+  font-weight:700;
+  text-decoration:underline;
+  text-underline-offset:2px;
+  overflow-wrap:anywhere;
+}
+
+/* =========================
    COMPOSER
 ========================= */
 
@@ -828,11 +858,6 @@ let activeId=null;
 let imageData=null;
 let controller=null;
 
-/*
-  Images are kept in memory for fast display.
-  A compressed copy is also stored in IndexedDB
-  so photos remain after reopening the app.
-*/
 const messageImages=new Map();
 
 const PHOTO_DB_NAME='noor_hvac_photos';
@@ -1032,10 +1057,6 @@ function load(){
     conversations=[];
   }
 
-  /*
-    Clean up any old versions that stored
-    full base64 images inside localStorage.
-  */
   let cleaned=false;
 
   conversations.forEach(c=>{
@@ -1097,10 +1118,6 @@ function load(){
 
 function save(){
 
-  /*
-    Store conversation text/history only.
-    Photos are stored separately in IndexedDB.
-  */
   const safeConversations=conversations.map(c=>({
     ...c,
     messages:Array.isArray(c.messages)
@@ -1219,10 +1236,6 @@ function deleteConversation(cid){
     return;
   }
 
-  /*
-    Remove saved photos belonging to
-    this conversation.
-  */
   if(Array.isArray(c.messages)){
 
     c.messages.forEach(m=>{
@@ -1236,7 +1249,6 @@ function deleteConversation(cid){
           );
 
         messageImages.delete(key);
-
         deletePhoto(key);
       }
     });
@@ -1409,6 +1421,66 @@ function renderList(){
   });
 }
 
+function renderCitations(bubble,citations){
+
+  if(
+    !Array.isArray(citations) ||
+    !citations.length
+  ){
+    return;
+  }
+
+  const unique=[];
+  const seen=new Set();
+
+  citations.forEach(citation=>{
+
+    if(
+      !citation ||
+      !citation.url ||
+      seen.has(citation.url)
+    ){
+      return;
+    }
+
+    seen.add(citation.url);
+    unique.push(citation);
+  });
+
+  if(!unique.length){
+    return;
+  }
+
+  const box=document.createElement('div');
+
+  box.className='citations';
+
+  const title=document.createElement('div');
+
+  title.className='citationsTitle';
+  title.textContent='Sources';
+
+  box.appendChild(title);
+
+  unique.forEach((citation,index)=>{
+
+    const link=document.createElement('a');
+
+    link.className='citationLink';
+    link.href=citation.url;
+    link.target='_blank';
+    link.rel='noopener noreferrer';
+
+    link.textContent=
+      citation.title?.trim() ||
+      citation.url;
+
+    box.appendChild(link);
+  });
+
+  bubble.appendChild(box);
+}
+
 async function renderMessages(){
 
   messagesEl.innerHTML='';
@@ -1464,6 +1536,14 @@ async function renderMessages(){
     if(m.role==='assistant'){
 
       bubble.innerHTML=markdown(m.text);
+
+      /*
+        Restore clickable web/manual/product sources.
+      */
+      renderCitations(
+        bubble,
+        m.citations
+      );
 
       const actions=document.createElement('div');
 
@@ -1613,9 +1693,6 @@ function editMessage(index){
 
   const old=c.messages[index].text;
 
-  /*
-    Editing branches from this point.
-  */
   c.messages=
     c.messages.slice(0,index);
 
@@ -1728,15 +1805,9 @@ textEl.addEventListener(
   autoSize
 );
 
-/*
-  PHOTO HANDLING
-
-  Large iPhone/iPad photos are reduced before
-  being sent to the API.
-
-  The compressed photo is also saved in IndexedDB
-  when the message is sent.
-*/
+/* =========================
+   PHOTO HANDLING
+========================= */
 
 fileEl.onchange=()=>{
 
@@ -1840,20 +1911,12 @@ fileEl.onchange=()=>{
         height
       );
 
-      /*
-        Keep enough detail for HVAC/R equipment,
-        nameplates, displays and wiring labels.
-      */
       imageData=
         canvas.toDataURL(
           'image/jpeg',
           0.82
         );
 
-      /*
-        If the encoded photo is still unusually large,
-        compress it one additional time.
-      */
       if(
         imageData.length>
         3000000
@@ -1952,10 +2015,6 @@ async function send(){
     return;
   }
 
-  /*
-    Keep visible text separate from the internal
-    photo-analysis instruction.
-  */
   const visibleUserText=q;
 
   const apiUserText=
@@ -1978,11 +2037,6 @@ async function send(){
     text:visibleUserText
   });
 
-  /*
-    Keep the image in page memory for immediate display,
-    and save the compressed copy in IndexedDB so it
-    remains after reopening the app.
-  */
   if(img){
 
     const key=
