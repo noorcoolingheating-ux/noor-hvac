@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 <meta name="theme-color" content="#075aa6">
 
 <title>NOOR HVAC</title>
@@ -853,7 +853,6 @@ function load(){
     conversations=[];
   }
 
-  /* Remove any old base64 images previously stored in localStorage */
   let cleaned=false;
 
   conversations.forEach(c=>{
@@ -871,7 +870,6 @@ function load(){
     save();
   }
 
-  /* Import old single-chat history if it exists */
   try{
 
     const old=JSON.parse(
@@ -911,11 +909,6 @@ function load(){
 }
 
 function save(){
-
-  /*
-    Store conversation text/history only.
-    Never put base64 image data into localStorage.
-  */
 
   const safeConversations=conversations.map(c=>({
     ...c,
@@ -1384,9 +1377,6 @@ function editMessage(index){
 
   const old=c.messages[index].text;
 
-  /*
-    Editing branches from this point.
-  */
   c.messages=
     c.messages.slice(0,index);
 
@@ -1593,20 +1583,12 @@ fileEl.onchange=()=>{
         height
       );
 
-      /*
-        Keep enough detail for HVAC/R equipment,
-        nameplates, displays and wiring labels.
-      */
       imageData=
         canvas.toDataURL(
           'image/jpeg',
           0.82
         );
 
-      /*
-        If the encoded photo is still unusually large,
-        compress it one additional time.
-      */
       if(
         imageData.length>
         3000000
@@ -1705,7 +1687,13 @@ async function send(){
     return;
   }
 
-  const userText=
+  /*
+    Keep the visible user message separate from the
+    internal instruction used for a photo-only request.
+  */
+  const visibleUserText=q;
+
+  const apiUserText=
     q ||
     'Analyze this HVAC/R equipment photo.';
 
@@ -1715,14 +1703,14 @@ async function send(){
       text:m.text
     }));
 
-  const userText=q;
+  const img=imageData;
 
   const messageId=id();
 
   c.messages.push({
     id:messageId,
     role:'user',
-    text:userText
+    text:visibleUserText
   });
 
   /*
@@ -1756,8 +1744,8 @@ async function send(){
 
   previewEl.style.display='none';
 
-  const userText=q;
-    userText || 'Analyze this HVAC/R equipment photo.',
+  await requestAI(
+    apiUserText,
     img,
     previous
   );
