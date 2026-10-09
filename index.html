@@ -829,10 +829,189 @@ let imageData=null;
 let controller=null;
 
 /*
-  Images are kept in memory for the current page session.
-  They are NOT stored as huge base64 strings in localStorage.
+  Images are kept in memory for fast display.
+  A compressed copy is also stored in IndexedDB
+  so photos remain after reopening the app.
 */
 const messageImages=new Map();
+
+const PHOTO_DB_NAME='noor_hvac_photos';
+const PHOTO_STORE_NAME='photos';
+
+function openPhotoDB(){
+
+  return new Promise((resolve,reject)=>{
+
+    const request=
+      indexedDB.open(
+        PHOTO_DB_NAME,
+        1
+      );
+
+    request.onupgradeneeded=()=>{
+
+      const db=request.result;
+
+      if(
+        !db.objectStoreNames.contains(
+          PHOTO_STORE_NAME
+        )
+      ){
+        db.createObjectStore(
+          PHOTO_STORE_NAME
+        );
+      }
+    };
+
+    request.onsuccess=()=>{
+      resolve(request.result);
+    };
+
+    request.onerror=()=>{
+      reject(request.error);
+    };
+  });
+}
+
+async function savePhoto(key,data){
+
+  if(!key || !data){
+    return;
+  }
+
+  try{
+
+    const db=
+      await openPhotoDB();
+
+    await new Promise((resolve,reject)=>{
+
+      const tx=
+        db.transaction(
+          PHOTO_STORE_NAME,
+          'readwrite'
+        );
+
+      tx.objectStore(
+        PHOTO_STORE_NAME
+      ).put(
+        data,
+        key
+      );
+
+      tx.oncomplete=()=>{
+        resolve();
+      };
+
+      tx.onerror=()=>{
+        reject(tx.error);
+      };
+    });
+
+    db.close();
+
+  }catch(e){
+
+    console.error(
+      'Photo save failed:',
+      e
+    );
+  }
+}
+
+async function getPhoto(key){
+
+  if(!key){
+    return null;
+  }
+
+  try{
+
+    const db=
+      await openPhotoDB();
+
+    const result=
+      await new Promise((resolve,reject)=>{
+
+        const tx=
+          db.transaction(
+            PHOTO_STORE_NAME,
+            'readonly'
+          );
+
+        const request=
+          tx.objectStore(
+            PHOTO_STORE_NAME
+          ).get(key);
+
+        request.onsuccess=()=>{
+          resolve(
+            request.result || null
+          );
+        };
+
+        request.onerror=()=>{
+          reject(request.error);
+        };
+      });
+
+    db.close();
+
+    return result;
+
+  }catch(e){
+
+    console.error(
+      'Photo load failed:',
+      e
+    );
+
+    return null;
+  }
+}
+
+async function deletePhoto(key){
+
+  if(!key){
+    return;
+  }
+
+  try{
+
+    const db=
+      await openPhotoDB();
+
+    await new Promise((resolve,reject)=>{
+
+      const tx=
+        db.transaction(
+          PHOTO_STORE_NAME,
+          'readwrite'
+        );
+
+      tx.objectStore(
+        PHOTO_STORE_NAME
+      ).delete(key);
+
+      tx.oncomplete=()=>{
+        resolve();
+      };
+
+      tx.onerror=()=>{
+        reject(tx.error);
+      };
+    });
+
+    db.close();
+
+  }catch(e){
+
+    console.error(
+      'Photo delete failed:',
+      e
+    );
+  }
+}
 
 function id(){
   return Date.now().toString(36)+Math.random().toString(36).slice(2,8);
@@ -853,13 +1032,21 @@ function load(){
     conversations=[];
   }
 
+  /*
+    Clean up any old versions that stored
+    full base64 images inside localStorage.
+  */
   let cleaned=false;
 
   conversations.forEach(c=>{
     if(!Array.isArray(c.messages)) return;
 
     c.messages.forEach(m=>{
-      if(m && typeof m.image==='string' && m.image.startsWith('data:')){
+      if(
+        m &&
+        typeof m.image==='string' &&
+        m.image.startsWith('data:')
+      ){
         delete m.image;
         cleaned=true;
       }
@@ -910,6 +1097,10 @@ function load(){
 
 function save(){
 
+  /*
+    Store conversation text/history only.
+    Photos are stored separately in IndexedDB.
+  */
   const safeConversations=conversations.map(c=>({
     ...c,
     messages:Array.isArray(c.messages)
@@ -1028,15 +1219,32 @@ function deleteConversation(cid){
     return;
   }
 
+  /*
+    Remove saved photos belonging to
+    this conversation.
+  */
+  if(Array.isArray(c.messages)){
+
+    c.messages.forEach(m=>{
+
+      if(m?.id){
+
+        const key=
+          imageKey(
+            cid,
+            m.id
+          );
+
+        messageImages.delete(key);
+
+        deletePhoto(key);
+      }
+    });
+  }
+
   conversations=conversations.filter(
     x=>x.id!==cid
   );
-
-  for(const key of messageImages.keys()){
-    if(key.startsWith(cid+':')){
-      messageImages.delete(key);
-    }
-  }
 
   if(!conversations.length){
     createConversation(false);
@@ -1201,7 +1409,7 @@ function renderList(){
   });
 }
 
-function renderMessages(){
+async function renderMessages(){
 
   messagesEl.innerHTML='';
 
@@ -1233,7 +1441,13 @@ function renderMessages(){
     return;
   }
 
-  c.messages.forEach((m,index)=>{
+  for(
+    let index=0;
+    index<c.messages.length;
+    index++
+  ){
+
+    const m=c.messages[index];
 
     const row=document.createElement('div');
 
@@ -1280,12 +1494,34 @@ function renderMessages(){
 
     }else{
 
-      const storedImage=
-        m.id
-          ? messageImages.get(
-              imageKey(c.id,m.id)
-            )
-          : null;
+      let storedImage=null;
+
+      if(m.id){
+
+        const key=
+          imageKey(
+            c.id,
+            m.id
+          );
+
+        storedImage=
+          messageImages.get(key) ||
+          null;
+
+        if(!storedImage){
+
+          storedImage=
+            await getPhoto(key);
+
+          if(storedImage){
+
+            messageImages.set(
+              key,
+              storedImage
+            );
+          }
+        }
+      }
 
       if(storedImage){
 
@@ -1338,7 +1574,7 @@ function renderMessages(){
     row.appendChild(bubble);
 
     messagesEl.appendChild(row);
-  });
+  }
 
   messagesEl.scrollTop=
     messagesEl.scrollHeight;
@@ -1377,6 +1613,9 @@ function editMessage(index){
 
   const old=c.messages[index].text;
 
+  /*
+    Editing branches from this point.
+  */
   c.messages=
     c.messages.slice(0,index);
 
@@ -1422,12 +1661,28 @@ async function regenerate(index){
   const userText=
     userMessage.text;
 
-  const userImage=
-    userMessage.id
-      ? messageImages.get(
-          imageKey(c.id,userMessage.id)
-        ) || null
-      : null;
+  let userImage=null;
+
+  if(userMessage.id){
+
+    const key=
+      imageKey(
+        c.id,
+        userMessage.id
+      );
+
+    userImage=
+      messageImages.get(key) ||
+      await getPhoto(key);
+
+    if(userImage){
+
+      messageImages.set(
+        key,
+        userImage
+      );
+    }
+  }
 
   const previous=
     c.messages.slice(0,userIndex);
@@ -1439,7 +1694,12 @@ async function regenerate(index){
   renderAll();
 
   await requestAI(
-    userText,
+    userText ||
+      (
+        userImage
+          ? 'Analyze this HVAC/R equipment photo.'
+          : ''
+      ),
     userImage,
     previous
   );
@@ -1471,14 +1731,11 @@ textEl.addEventListener(
 /*
   PHOTO HANDLING
 
-  The original app sent the full-resolution photo directly
-  as a base64 data URL.
+  Large iPhone/iPad photos are reduced before
+  being sent to the API.
 
-  Large iPhone/iPad photos can make the /api/chat request
-  too large for Vercel and produce HTTP 413.
-
-  This keeps the existing photo workflow but reduces only
-  oversized photos before they are assigned to imageData.
+  The compressed photo is also saved in IndexedDB
+  when the message is sent.
 */
 
 fileEl.onchange=()=>{
@@ -1583,12 +1840,20 @@ fileEl.onchange=()=>{
         height
       );
 
+      /*
+        Keep enough detail for HVAC/R equipment,
+        nameplates, displays and wiring labels.
+      */
       imageData=
         canvas.toDataURL(
           'image/jpeg',
           0.82
         );
 
+      /*
+        If the encoded photo is still unusually large,
+        compress it one additional time.
+      */
       if(
         imageData.length>
         3000000
@@ -1688,8 +1953,8 @@ async function send(){
   }
 
   /*
-    Keep the visible user message separate from the
-    internal instruction used for a photo-only request.
+    Keep visible text separate from the internal
+    photo-analysis instruction.
   */
   const visibleUserText=q;
 
@@ -1714,12 +1979,25 @@ async function send(){
   });
 
   /*
-    Keep the image in page memory only.
-    Do not store the base64 image in localStorage.
+    Keep the image in page memory for immediate display,
+    and save the compressed copy in IndexedDB so it
+    remains after reopening the app.
   */
   if(img){
+
+    const key=
+      imageKey(
+        c.id,
+        messageId
+      );
+
     messageImages.set(
-      imageKey(c.id,messageId),
+      key,
+      img
+    );
+
+    await savePhoto(
+      key,
       img
     );
   }
