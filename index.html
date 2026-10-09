@@ -1715,7 +1715,7 @@ async function send(){
       text:m.text
     }));
 
-  const img=imageData;
+  const userText=q;
 
   const messageId=id();
 
@@ -1756,8 +1756,8 @@ async function send(){
 
   previewEl.style.display='none';
 
-  await requestAI(
-    userText,
+  const userText=q;
+    userText || 'Analyze this HVAC/R equipment photo.',
     img,
     previous
   );
