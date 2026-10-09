@@ -262,7 +262,36 @@ provided or verified, say so.
 
 Do not present generic HVAC information as manufacturer-specific.
 
-9. COMMUNICATION STYLE
+When the user asks for a manual, installation manual, service manual,
+technical bulletin, wiring diagram, specification sheet, submittal,
+product page, replacement part, part number, documentation, source,
+website, or link, use web search when appropriate.
+
+When web search is used, prefer authoritative sources such as the
+equipment manufacturer, official documentation, authorized distributors,
+or other reliable technical sources.
+
+When a relevant manufacturer manual or technical document is found,
+use that source to answer the question rather than relying on generic
+information.
+
+Do not invent a URL, manual, product page, or source.
+
+9. WEB SEARCH AND SOURCES
+Use web search whenever current or externally verified information
+would materially improve accuracy.
+
+If the user explicitly asks to search, find, look up, verify online,
+find a manual, find a part, find a product, find documentation, or
+provide a link, use web search.
+
+When web search is used, base factual claims on the information found
+and cite the relevant web sources in the response.
+
+For manufacturer-specific HVAC/R technical questions, prioritize
+manufacturer documentation whenever available.
+
+10. COMMUNICATION STYLE
 Be direct and practical.
 
 Answer the user's actual question first.
@@ -275,7 +304,7 @@ they improve clarity.
 Use °F, PSI/PSIG, microns, volts, amps, ohms, BTU/h and other
 standard HVAC/R units where appropriate.
 
-10. MEMORY
+11. MEMORY
 Use all relevant information contained in the supplied conversation
 and any supplied NOOR HVAC memory.
 
@@ -294,30 +323,51 @@ ${memory || 'No additional saved memory was supplied.'}
       'https://api.openai.com/v1/responses',
       {
         method: 'POST',
+
         headers: {
           Authorization:
             `Bearer ${process.env.OPENAI_API_KEY}`,
-          'Content-Type': 'application/json'
+
+          'Content-Type':
+            'application/json'
         },
 
         body: JSON.stringify({
           model: 'gpt-5.6-luna',
+
           instructions,
+
           tools: [
-            { type: 'web_search' }
+            {
+              type: 'web_search',
+              search_context_size: 'medium'
+            }
           ],
+
+          /*
+            Return the web-search source list in addition
+            to normal URL citations.
+          */
+          include: [
+            'web_search_call.action.sources'
+          ],
+
           input
         })
       }
     );
 
-    const rawResponse = await response.text();
+    const rawResponse =
+      await response.text();
 
     let data;
 
     try {
-      data = JSON.parse(rawResponse);
+      data =
+        JSON.parse(rawResponse);
+
     } catch (parseError) {
+
       console.error(
         'OpenAI returned non-JSON response:',
         response.status,
@@ -331,6 +381,7 @@ ${memory || 'No additional saved memory was supplied.'}
     }
 
     if (!response.ok) {
+
       return res.status(response.status).json({
         error:
           data?.error?.message ||
@@ -338,33 +389,157 @@ ${memory || 'No additional saved memory was supplied.'}
       });
     }
 
-    const outputItems = (data.output || [])
-      .flatMap(item => item.content || [])
-      .filter(item => item.type === 'output_text');
+    /*
+      Get every output_text content item.
+    */
+    const outputItems =
+      (data.output || [])
+        .flatMap(item =>
+          Array.isArray(item.content)
+            ? item.content
+            : []
+        )
+        .filter(
+          item =>
+            item.type === 'output_text'
+        );
 
-    const outputText = outputItems
-      .map(item => item.text || '')
-      .join('\n')
-      .trim();
+    const outputText =
+      outputItems
+        .map(item =>
+          item.text || ''
+        )
+        .join('\n')
+        .trim();
 
-    const citations = outputItems
-      .flatMap(item => item.annotations || [])
-      .filter(annotation => annotation.type === 'url_citation')
-      .map(annotation => ({
-        title: annotation.title || '',
-        url: annotation.url || ''
-      }))
-      .filter(citation => citation.url);
+    /*
+      SOURCE COLLECTION
+
+      Sources can come from two places:
+
+      1. URL citations attached directly to output text.
+      2. Sources returned by the web_search_call itself.
+
+      Collect both so the frontend receives useful links
+      even when the model does not attach every searched
+      URL as a text annotation.
+    */
+
+    const sourceMap =
+      new Map();
+
+    /*
+      1. Normal URL citations.
+    */
+    for (const item of outputItems) {
+
+      const annotations =
+        Array.isArray(item.annotations)
+          ? item.annotations
+          : [];
+
+      for (const annotation of annotations) {
+
+        if (
+          annotation?.type !==
+          'url_citation'
+        ) {
+          continue;
+        }
+
+        const url =
+          String(
+            annotation.url || ''
+          ).trim();
+
+        if (!url) {
+          continue;
+        }
+
+        sourceMap.set(
+          url,
+          {
+            title:
+              String(
+                annotation.title || ''
+              ).trim(),
+
+            url
+          }
+        );
+      }
+    }
+
+    /*
+      2. Sources returned directly by web_search_call.
+    */
+    for (const item of data.output || []) {
+
+      if (
+        item?.type !==
+        'web_search_call'
+      ) {
+        continue;
+      }
+
+      const sources =
+        Array.isArray(
+          item?.action?.sources
+        )
+          ? item.action.sources
+          : [];
+
+      for (const source of sources) {
+
+        const url =
+          String(
+            source?.url || ''
+          ).trim();
+
+        if (!url) {
+          continue;
+        }
+
+        /*
+          Keep an existing citation title if one
+          was already collected for this URL.
+        */
+        if (!sourceMap.has(url)) {
+
+          sourceMap.set(
+            url,
+            {
+              title:
+                String(
+                  source?.title || ''
+                ).trim(),
+
+              url
+            }
+          );
+        }
+      }
+    }
+
+    const citations =
+      Array.from(
+        sourceMap.values()
+      );
 
     return res.status(200).json({
       text:
         outputText ||
         'No text response was returned.',
+
       citations
     });
 
   } catch (error) {
-    console.error('NOOR HVAC API error:', error);
+
+    console.error(
+      'NOOR HVAC API error:',
+      error
+    );
 
     return res.status(500).json({
       error:
